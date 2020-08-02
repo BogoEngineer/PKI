@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+        <mat-form-field appearance="fill" class="email" [style.fontSize.px]=14>
+            <mat-label>Enter your email</mat-label>
+            <input matInput required [(ngModel)]='user.email'>
+          </mat-form-field>
+          <br>
+        <mat-form-field appearance="fill" class="password" [style.fontSize.px]=14>
+            <mat-label>Enter your password</mat-label>
+            <input matInput [type]="hide ? 'password' : 'text'" required [(ngModel)]='user.password'>
+            <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+            <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+            </button>
+        </mat-form-field>
+        <br>
+        <button mat-raised-button class="confirm">Log In</button>
+
+</body>
+</html>

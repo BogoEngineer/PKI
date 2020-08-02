@@ -1,0 +1,78 @@
+html{
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+body{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: #E8E8E8;
+}
+
+.title {
+    position: relative;
+    left: 45%;
+    width: 20%;
+}
+
+.filter {
+  position: relative;
+  left: 45%;
+  width: 20%;
+}
+
+
+.addnew{
+  position: absolute;
+  left: 100%;
+  top: 10%;
+}
+
+.mat-elevation-z8 {
+  position: relative;
+  left: 15%;
+  right: 15%;
+  width: 70%; 
+}
+
+table {
+  width: 100%;
+}
+
+tr.mat-footer-row {
+  font-weight: bold;
+}
+
+.mat-table-sticky {
+  border-top: 1px solid #e0e0e0;
+}
+
+tr:hover {
+  background-color:#f5f5f5;
+  cursor: pointer;
+}
+
+.specification{
+  position: relative;
+  left: 15%;
+  right: 15%;
+  width: 70%;
+}
+
+a {
+  color: rgb(241, 172, 172);
+}
+
+.appointment {
+  color: rgb(192, 248, 190);
+}
+
+.discard:hover {
+  color: rgb(209, 51, 51);
+}
+
+.appointment:hover {
+  color:  rgb(41, 228, 34);
+}

@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <p>Choose supplements for {{title}}</p>
+    <mat-form-field class="supplements">
+        <mat-chip-list #chipList aria-label="Supplement selection">
+          <mat-chip
+            *ngFor="let supplement of supplements"
+            [selectable]="true"
+            [removable]="true"
+            (removed)="remove(supplement)">
+            {{supplement.name}}, {{supplement.manufacturer}}
+            <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+          </mat-chip>
+          <input
+            placeholder="New supplement..."
+            #supplementInput
+            [formControl]="supplementCtrl"
+            [matAutocomplete]="auto"
+            [matChipInputFor]="chipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            (matChipInputTokenEnd)="add($event)">
+        </mat-chip-list>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+          <mat-option *ngFor="let supplement of filteredSupplements | async" [value]="supplement">
+            {{supplement.name}}, {{supplement.manufacturer}}
+          </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+    <br>
+</body>
+</html>

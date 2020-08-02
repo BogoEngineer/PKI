@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    Choose fooditems that are {{title}}: 
+    <mat-form-field class="fooditems">
+        <mat-chip-list #chipList aria-label="fooditem selection">
+          <mat-chip
+            *ngFor="let fooditem of fooditems"
+            [selectable]="true"
+            [removable]="true"
+            (removed)="remove(fooditem)">
+            {{fooditem.name}}, {{fooditem.manufacturer}}
+            <mat-icon matChipRemove *ngIf="true">cancel</mat-icon>
+          </mat-chip>
+          <input
+            placeholder="New fooditem..."
+            #fooditemInput
+            [formControl]="fooditemCtrl"
+            [matAutocomplete]="auto"
+            [matChipInputFor]="chipList"
+            [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+            (matChipInputTokenEnd)="add($event)"
+            (focusout)="notFocused()">
+        </mat-chip-list>
+        <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)">
+          <mat-option *ngFor="let fooditem of filteredfooditems | async" [value]="fooditem">
+            {{fooditem.name}}
+          </mat-option>
+        </mat-autocomplete>
+    </mat-form-field>
+    <br>
+</body>
+</html>

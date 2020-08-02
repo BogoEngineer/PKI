@@ -1,0 +1,192 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div *ngIf="type=='user'">
+          <mat-vertical-stepper [linear]="false" #stepper>
+            <mat-step [stepControl]="firstFormGroup">
+              <form [formGroup]="firstFormGroup">
+                <ng-template matStepLabel>Fill out patient's info</ng-template>
+                <mat-form-field>
+                  <mat-label>First name</mat-label>
+                  <input matInput placeholder="First name" formControlName="firstCtrl" required [(ngModel)]='patient.first_name'>
+                </mat-form-field>
+                <br>
+                <mat-form-field>
+                  <mat-label>Last name</mat-label>
+                  <input matInput placeholder="First name" formControlName="secondCtrl" required [(ngModel)]='patient.last_name'>
+                </mat-form-field>
+                <br>
+                <mat-form-field>
+                  <mat-label>Email</mat-label>
+                  <input matInput placeholder="email" formControlName="thirdCtrl" required [(ngModel)]='patient.email'>
+                </mat-form-field>
+                <br>
+                <mat-form-field>
+                  <mat-label>Password</mat-label>
+                  <input matInput [type]="hide ? 'password' : 'text'" formControlName="fourthCtrl" required [(ngModel)]='patient.password'>
+                  <button mat-icon-button matSuffix (click)="hide = !hide" [attr.aria-label]="'Hide password'" [attr.aria-pressed]="hide">
+                  <mat-icon>{{hide ? 'visibility_off' : 'visibility'}}</mat-icon>
+                  </button>
+                </mat-form-field>
+                <div>
+                  <button mat-button matStepperNext>Next</button>
+                </div>
+              </form>
+            </mat-step>
+            <mat-step [stepControl]="secondFormGroup">
+              <form [formGroup]="secondFormGroup">
+                <ng-template matStepLabel>Create a phase for the new patient</ng-template>
+                <mat-form-field>
+                  <mat-label>Phase number</mat-label>
+                  <mat-select [(value)]="phase.phase_number">
+                    <mat-option value="1">1</mat-option>
+                    <mat-option value="2">2</mat-option>
+                    <mat-option value="3">3</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <br>
+                <mat-form-field>
+                  <mat-label>Meal plan</mat-label>
+                  <mat-select [(value)]="phase.meal_plan" formControlName="secondCtrl">
+                    <mat-option *ngFor="let meal_plan of meal_plans" [value]="meal_plan._id">{{meal_plan.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <br>
+                <mat-form-field>
+                  <mat-label>Food choice</mat-label>
+                  <mat-select [(value)]="phase.food_choice" required formControlName="thirdCtrl">
+                    <mat-option *ngFor="let food_choice of food_choices" [value]="food_choice._id">{{food_choice.name}}</mat-option>
+                  </mat-select>
+                </mat-form-field>
+                <br>
+                <mat-form-field appearance="fill">
+                  <mat-label>Exception:</mat-label>
+                  <textarea matInput [(ngModel)]="phase.exception" formControlName="fourthCtrl"></textarea>
+                </mat-form-field>
+                <div>
+                  <button mat-button matStepperPrevious>Back</button>
+                  <button mat-button matStepperNext>Next</button>
+                </div>
+              </form>
+            </mat-step>
+            <mat-step>
+              <ng-template matStepLabel>Add Supplement plan to the phase</ng-template>
+              <app-choose-supplements *ngFor="let time of times" 
+              [title]="time" 
+              [confirmed]="confirm_forward"
+              (preview)="getPreview($event)"></app-choose-supplements>
+              <div>
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button matStepperNext (click)="saveSuppl()">Next</button>
+              </div>
+            </mat-step>
+            <mat-step>
+              <ng-template matStepLabel>Done</ng-template>
+              <p>You are now done, please check given info once again by clicking on Show Preview button bellow.</p>
+              <div>
+                <div *ngIf="showPreview">
+                  <div class="essentialInfo">
+                    Name: {{patient.first_name}} {{patient.last_name}}
+                    <br>
+                    Email: {{patient.email}}
+                    <br>
+                    Password: {{patient.password}}
+                  </div>
+                  <div class="phaseInfo">
+                    Phase number: {{phase.phase_number}}
+                    <br>
+                    Meal plan: {{getMealPlanName(phase.meal_plan)}}
+                    <br>
+                    Food choice: {{getFoodChoiceName(phase.food_choice)}}
+                    <br>
+                    Exception: {{phase.exception}}
+                    <div *ngFor="let supps of preview_supplement_list, index as i">
+                      {{supps.title}}: {{previewToString(supps.data)}}
+                    </div>
+                  </div>
+                </div>
+                <button mat-button matStepperPrevious>Back</button>
+                <button mat-button (click)="previewToggle()" *ngIf="showPreview==false">Show Preview</button>
+                <button mat-button (click)="previewToggle()" *ngIf="showPreview==true">Hide Preview</button>
+                <button mat-button (click)="confirm()">Confirm</button>
+              </div>
+            </mat-step>
+          </mat-vertical-stepper>
+    </div>
+    <div *ngIf="type=='supplement'" class="supplement">
+      <mat-form-field appearance="fill" class="fieldS" [style.fontSize.px]=14>
+        <mat-label>Name</mat-label>
+        <input matInput required [(ngModel)]='supplement.name'>
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="fill" class="fieldS" [style.fontSize.px]=14>
+        <mat-label>Manufacturer</mat-label>
+        <input matInput required [(ngModel)]='supplement.manufacturer'>
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="fill" class="fieldS" [style.fontSize.px]=14>
+        <mat-label>Description</mat-label>
+        <textarea matInput [(ngModel)]="supplement.description"></textarea>
+      </mat-form-field>
+      <br>
+      <button mat-raised-button (click)="confirm()">Confirm</button>
+    </div>
+    <div *ngIf="type=='fooditem'" class="supplement">
+      <mat-form-field appearance="fill" class="fieldS" [style.fontSize.px]=14>
+        <mat-label>Name</mat-label>
+        <input matInput required [(ngModel)]='fooditem.name'>
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="fill" class="fieldS" [style.fontSize.px]=14>
+        <mat-label>Description</mat-label>
+        <textarea matInput [(ngModel)]="fooditem.description"></textarea>
+      </mat-form-field>
+      <br>
+      <button mat-raised-button (click)="confirm()">Confirm</button>
+    </div>
+    <div *ngIf="type=='foodchoice'" class="supplement">
+      <mat-form-field appearance="fill" class="fieldS" [style.fontSize.px]=14>
+        <mat-label>Name</mat-label>
+        <input matInput required [(ngModel)]='foodchoice.name'>
+      </mat-form-field>
+      <app-choose-fooditems *ngFor="let permission of permissions" 
+              [title]="(permission.split('_')[0]=='not' ? permission.split('_')[0] : '') + ' allowed'"  
+              [confirmed]="confirm_forward"
+              (items)="getItems($event)"
+              class="needright"
+      >
+      </app-choose-fooditems>
+      <br>
+      <button mat-raised-button (click)="confirm()">Confirm</button>
+    </div>
+    <div *ngIf="type=='mealplan'" class="supplement">
+      <mat-form-field appearance="fill" class="fieldS" [style.fontSize.px]=14>
+        <mat-label>Name</mat-label>
+        <input matInput required [(ngModel)]='mealplan.name'>
+      </mat-form-field>
+      <br>
+      <mat-form-field appearance="fill" class="fieldS" [style.fontSize.px]=14>
+        <mat-label>Description</mat-label>
+        <textarea matInput [(ngModel)]="mealplan.description"></textarea>
+      </mat-form-field>
+      <br>
+      <button mat-raised-button (click)="confirm()">Confirm</button>
+    </div>
+    <div *ngIf="type=='post'" class="supplement">
+      <input #csvInput hidden="true" type="file" onclick="this.value=null" (change)="csvInputChange($event)" accept=".csv"/>
+      <button mat-flat-button color="primary" (click)="csvInput.click()">Choose Post Image</button>
+      <br>
+      <mat-form-field appearance="fill" class="fieldS" [style.fontSize.px]=14>
+        <mat-label>Description</mat-label>
+        <textarea matInput [(ngModel)]="fooditem.description"></textarea>
+      </mat-form-field>
+      <br>
+      <button mat-raised-button (click)="confirm()">Confirm</button>
+    </div>
+</body>
+</html>

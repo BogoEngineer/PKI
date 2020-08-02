@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="prof">
+        <div class="profile-pic">
+            <img src='{{profile_picture}}' width="300" height="300">
+        </div>
+        <div class="profile-info">
+            <h2>Patient's info:</h2>
+            <b>Name:</b> {{patient.first_name}} {{patient.last_name}}
+            <br>
+            <b>Email:</b> {{patient.email}}
+            <br>
+            <b>Date created:</b> {{patient.date_created}}
+            <div *ngIf="!update">
+                <b>Phase:</b> {{patient.phase.phase_number}}
+                <br>
+                <b>Meal plan:</b> {{patient.phase.meal_plan.name}}
+                <br> {{patient.phase.meal_plan.description}} 
+                <br>
+                <b>Food choice:</b> {{patient.phase.food_choice.name}}
+                <br>
+                    Allowed: {{arrayToStr(patient.phase.food_choice.allowed)}}
+                <br>
+                    Not allowed: {{arrayToStr(patient.phase.food_choice.not_allowed)}}
+                <br>
+                <b>Supplement plan:</b> 
+                <br>
+                <div *ngFor="let time of times ">
+                    {{beautify(time)}}: {{arrayToStr(patient.phase.supplement_plan[time])}}
+                </div>
+            </div>
+            <div *ngIf="update">
+                <mat-vertical-stepper [linear]="false" #stepper>
+                    <mat-step [stepControl]="secondFormGroup">
+                      <form [formGroup]="secondFormGroup">
+                        <ng-template matStepLabel>Create a phase for the patient</ng-template>
+                        <mat-form-field>
+                          <mat-label>Phase number</mat-label>
+                          <mat-select [(value)]="update_phase.phase_number">
+                            <mat-option value="1">1</mat-option>
+                            <mat-option value="2">2</mat-option>
+                            <mat-option value="3">3</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                        <br>
+                        <mat-form-field>
+                          <mat-label>Meal plan</mat-label>
+                          <mat-select [(value)]="update_phase.meal_plan" formControlName="secondCtrl">
+                            <mat-option *ngFor="let meal_plan of meal_plans" [value]="meal_plan._id">{{meal_plan.name}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                        <br>
+                        <mat-form-field>
+                          <mat-label>Food choice</mat-label>
+                          <mat-select [(value)]="update_phase.food_choice" required formControlName="thirdCtrl">
+                            <mat-option *ngFor="let food_choice of food_choices" [value]="food_choice._id">{{food_choice.name}}</mat-option>
+                          </mat-select>
+                        </mat-form-field>
+                        <br>
+                        <mat-form-field appearance="fill">
+                          <mat-label>Exception:</mat-label>
+                          <textarea matInput [(ngModel)]="update_phase.exception" formControlName="fourthCtrl"></textarea>
+                        </mat-form-field>
+                        <div>
+                          <button mat-button matStepperPrevious>Back</button>
+                          <button mat-button matStepperNext>Next</button>
+                        </div>
+                      </form>
+                    </mat-step>
+                    <mat-step>
+                      <ng-template matStepLabel>Add Supplement plan to the phase</ng-template>
+                      <app-choose-supplements *ngFor="let time of times" 
+                      [title]="beautify(time)" 
+                      [confirmed]="confirm_forward"
+                      (preview)="getPreview($event)"></app-choose-supplements>
+                      <div>
+                        <button mat-button matStepperPrevious>Back</button>
+                        <button mat-button matStepperNext (click)="saveSuppl()">Next</button>
+                      </div>
+                    </mat-step>
+                    <mat-step>
+                      <ng-template matStepLabel>Done</ng-template>
+                      <p>You are now done.</p>
+                      <div>
+                        <button mat-button matStepperPrevious>Back</button>
+                        <button mat-button (click)="confirm()">Confirm</button>
+                      </div>
+                    </mat-step>
+                  </mat-vertical-stepper>
+            </div>
+            <button mat-raised-button class="updatePhase" (click)="updateToggle()" *ngIf="!update">Assign new phase</button>
+            <button mat-raised-button class="updatePhase" (click)="updateToggle()" *ngIf="update">Cancel</button>
+        </div>
+    </div>
+</body>
+</html>
