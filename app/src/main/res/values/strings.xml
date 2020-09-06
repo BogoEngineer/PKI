@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">HealthFormula</string>
+    <string name="username">username"</string>
+    <string name="password">password"</string>
+    <string name="open">open</string>
+    <string name="close">close</string>
+    <string name="doupletap">Click back again to exit application</string>
+</resources>

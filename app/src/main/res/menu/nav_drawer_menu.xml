@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item android:title="General">
+        <menu>
+            <group
+                android:id="@+id/generalGroup"
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/home"
+                    android:title="Home"
+                    android:icon="@drawable/ic_home_black_18dp"
+                    android:checkable="true"/>
+
+                <item
+                    android:id="@+id/about"
+                    android:title="About Us"
+                    android:icon="@drawable/ic_info_black_18dp"
+                    android:checkable="true" />
+                <item
+                    android:id="@+id/allSupplements"
+                    android:title="Browse Supplements"
+                    android:icon="@drawable/ic_pill"
+                    android:checkable="true" />
+            </group>
+        </menu>
+    </item>
+
+    <item android:title="My Profile">
+        <menu>
+            <group
+                android:id="@+id/profileGroup"
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/mySupplementPlan"
+                    android:title="My Supplements"
+                    android:icon="@drawable/ic_person_black_18dp"
+                    android:checkable="true"/>
+                <item
+                    android:id="@+id/myMealPlan"
+                    android:title="My Meal Plan"
+                    android:icon="@drawable/ic_food"
+                    android:checkable="true"/>
+            </group>
+        </menu>
+    </item>
+
+    <item android:title="Other">
+        <menu>
+            <group
+                android:id="@+id/applicationGroup"
+                android:checkableBehavior="single">
+                <item
+                    android:id="@+id/settings"
+                    android:title="Settings"
+                    android:icon="@drawable/ic_settings_24px"
+                    android:checkable="true"/>
+                <item
+                    android:id="@+id/logout"
+                    android:title="Log Out"
+                    android:icon="@drawable/ic_power_settings_new_24px"
+                    android:checkable="true"/>
+            </group>
+        </menu>
+    </item>
+
+</menu>
