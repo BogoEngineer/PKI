@@ -37,6 +37,17 @@
         <action
             android:id="@+id/action_homeFragment_to_allSupplementsFragment"
             app:destination="@id/allSupplementsFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_postDetailsFragment"
+            app:destination="@id/postDetailsFragment"
+            app:enterAnim="@android:anim/fade_in"
+            app:exitAnim="@anim/nav_default_exit_anim"
+            app:popEnterAnim="@anim/nav_default_pop_enter_anim"
+            app:popExitAnim="@anim/nav_default_pop_exit_anim">
+            <argument
+                android:name="post"
+                app:argType="string" />
+        </action>
     </fragment>
     <fragment
         android:id="@+id/aboutFragment"
@@ -138,5 +149,18 @@
         <action
             android:id="@+id/action_mySupplementPlanFragment_to_allSupplementsFragment"
             app:destination="@id/allSupplementsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/postDetailsFragment"
+        android:name="com.veskekatke.healthformula.presentation.view.fragments.PostDetailsFragment"
+        android:label="PostDetailsFragment" >
+        <argument
+            android:name="post"
+            app:argType="string"/>
+        <action
+            android:id="@+id/action_postDetailsFragment_to_homeFragment"
+            app:destination="@id/homeFragment"
+            app:enterAnim="@anim/fragment_open_enter"
+            app:exitAnim="@anim/fragment_open_exit" />
     </fragment>
 </navigation>

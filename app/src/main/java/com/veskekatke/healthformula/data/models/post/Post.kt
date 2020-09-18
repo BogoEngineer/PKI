@@ -1,8 +1,10 @@
 package com.veskekatke.healthformula.data.models.post
 
+import com.google.gson.annotations.SerializedName
+
 data class Post (
-    val id: Int,
-    val name: String,
-    val picture: String,
-    val content: String
+    @SerializedName("id") val id: Int,
+    @SerializedName("name") val name: String,
+    @SerializedName("picture") val picture: String,
+    @SerializedName("content") val content: String
 )

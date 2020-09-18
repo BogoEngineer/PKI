@@ -13,12 +13,17 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.navigation.NavigationView
+import com.google.gson.Gson
 import com.veskekatke.healthformula.R
+import com.veskekatke.healthformula.data.models.post.Post
 import com.veskekatke.healthformula.presentation.view.recycler.adapter.PostAdapter
+import com.veskekatke.healthformula.presentation.view.recycler.adapter.SupplementAdapter
 import com.veskekatke.healthformula.presentation.view.recycler.diff.PostDiffItemCallback
 import com.veskekatke.healthformula.presentation.viewmodel.PostViewModel
+import com.veskekatke.healthformula.presentation.viewmodel.SupplementViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import timber.log.Timber
@@ -47,7 +52,12 @@ class HomeFragment : Fragment(R.layout.fragment_home){
     private fun initRecycler(){
         postRv.layoutManager = LinearLayoutManager(this.context)
         postAdapter = PostAdapter(PostDiffItemCallback()){
-            Toast.makeText(context, it.toString(), Toast.LENGTH_SHORT).show()
+            val navController = findNavController()
+
+            val jsonData = Gson().toJson(it)
+
+            val action = HomeFragmentDirections.actionHomeFragmentToPostDetailsFragment(jsonData)
+            navController.navigate(action)
         }
         postRv.adapter = postAdapter
     }

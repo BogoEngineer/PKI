@@ -5,4 +5,6 @@
     <color name="colorAccent">#03DAC5</color>
     <color name="LogInBackground">#bce4eb</color>
     <color name="white">#ffffff</color>
+    <color name="app_background">#C3DDF8</color>
+    <color name="black">#000000</color>
 </resources>

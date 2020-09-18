@@ -45,17 +45,20 @@
             android:inputType="textPassword"/>
     </com.google.android.material.textfield.TextInputLayout>
 
-    <Button
+
+    <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/logInButton"
-        app:layout_constraintTop_toBottomOf="@id/passwordInput"
+        app:layout_constraintTop_toBottomOf="@id/forgotPasswordLink"
         app:layout_constraintLeft_toLeftOf="@+id/passwordInput"
-        android:layout_marginTop="20dp"
+        app:layout_constraintRight_toRightOf="@id/passwordInput"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Log In"
+        android:layout_marginTop="20dp"
+        android:layout_margin="16dp"
         android:textColor="#3b3a38"
-        style="?attr/materialButtonOutlinedStyle"
-        />
+        android:textAlignment="center"
+        android:text="@string/logIn" />
+
 
     <TextView
         android:id="@+id/forgotPasswordLink"
@@ -63,6 +66,7 @@
         android:layout_height="wrap_content"
         app:layout_constraintTop_toBottomOf="@id/passwordInput"
         app:layout_constraintRight_toRightOf="@id/passwordInput"
+        app:layout_constraintLeft_toLeftOf="@id/passwordInput"
         android:layout_marginTop="20dp"
         android:text="Forgot password?"
         ></TextView>

@@ -1,16 +1,109 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/app_background">
 
-    <TextView
+    <androidx.core.widget.NestedScrollView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:text="MY SUPPLEMENT PLAN"
-        android:textSize="50dp"></TextView>
+        android:layout_marginBottom="10dp">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
+            <androidx.fragment.app.FragmentContainerView
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:id="@+id/before_breakfastFr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:tag="before_breakfastFr"/>
+
+            <androidx.fragment.app.FragmentContainerView
+                app:layout_constraintTop_toBottomOf="@id/before_breakfastFr"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:id="@+id/after_breakfastFr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:tag="after_breakfastFr"/>
+
+            <androidx.fragment.app.FragmentContainerView
+                app:layout_constraintTop_toBottomOf="@id/after_breakfastFr"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:id="@+id/am_snackFr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:tag="am_snackFr"/>
+
+            <androidx.fragment.app.FragmentContainerView
+                app:layout_constraintTop_toBottomOf="@id/am_snackFr"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:id="@+id/before_lunchFr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:tag="before_lunchFr"/>
+
+            <androidx.fragment.app.FragmentContainerView
+                app:layout_constraintTop_toBottomOf="@id/before_lunchFr"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:id="@+id/after_lunchFr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:tag="after_lunchFr"/>
+
+            <androidx.fragment.app.FragmentContainerView
+                app:layout_constraintTop_toBottomOf="@id/after_lunchFr"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:id="@+id/pm_snackFr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:tag="pm_snackFr"/>
+
+            <androidx.fragment.app.FragmentContainerView
+                app:layout_constraintTop_toBottomOf="@id/pm_snackFr"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:id="@+id/before_dinnerFr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:tag="before_dinnerFr"/>
+
+            <androidx.fragment.app.FragmentContainerView
+                app:layout_constraintTop_toBottomOf="@id/before_dinnerFr"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:id="@+id/after_dinnerFr"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
+                android:tag="after_dinnerFr"/>
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
 </androidx.constraintlayout.widget.ConstraintLayout>
