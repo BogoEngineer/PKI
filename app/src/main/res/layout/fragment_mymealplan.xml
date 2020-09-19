@@ -4,13 +4,35 @@
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <TextView
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/topTab"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:tabPaddingStart="0dp"
+        app:tabPaddingEnd="0dp">
+
+    <com.google.android.material.tabs.TabItem
+        android:tag="currentPlanTi"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:text="MY MEAL PLAN"
-        android:textSize="50dp"></TextView>
+        android:icon="@drawable/ic_list_alt_24px"
+        />
+
+    <com.google.android.material.tabs.TabItem
+        android:tag="foodChoiceTi"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:icon="@drawable/ic_done_24px"
+        />
+    </com.google.android.material.tabs.TabLayout>
+
+    <androidx.viewpager2.widget.ViewPager2
+        android:id="@+id/viewPager2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_anchor="@id/topTab"
+        app:layout_constraintTop_toBottomOf="@+id/topTab"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layoutDirection="rtl"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

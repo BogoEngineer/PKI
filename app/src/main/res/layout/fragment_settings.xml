@@ -2,15 +2,93 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:background="@color/app_background">
 
     <TextView
+        android:id="@+id/notifyTv"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="20dp"
+        android:text="@string/notify"/>
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/notifySm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        android:text="SETTINGS"
-        android:textSize="50dp"></TextView>
+        android:layout_marginRight="5dp"
+        android:checked="true" />
+
+    <View
+        android:id="@+id/break1"
+        app:layout_constraintTop_toBottomOf="@id/notifySm"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#EAE6E6"/>
+
+    <TextView
+        android:id="@+id/resetTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/break1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="20dp"
+        android:text="@string/reset"/>
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/resetSm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/break1"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="5dp"
+        android:checked="true"/>
+
+    <View
+    android:id="@+id/break2"
+    app:layout_constraintTop_toBottomOf="@id/resetTv"
+    android:layout_marginTop="5dp"
+    android:layout_width="match_parent"
+    android:layout_height="1dp"
+    android:background="#EAE6E6"/>
+
+
+    <TextView
+        android:id="@+id/darkThemeTv"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/break2"
+        app:layout_constraintLeft_toLeftOf="parent"
+        android:layout_marginTop="15dp"
+        android:layout_marginLeft="10dp"
+        android:textSize="20dp"
+        android:text="@string/dark"/>
+
+    <androidx.appcompat.widget.SwitchCompat
+        android:id="@+id/darkThemeSm"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toBottomOf="@id/break2"
+        app:layout_constraintRight_toRightOf="parent"
+        android:layout_marginRight="5dp"
+        android:checked="true" />
+
+    <View
+        android:id="@+id/break3"
+        app:layout_constraintTop_toBottomOf="@id/darkThemeTv"
+        android:layout_marginTop="5dp"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:background="#EAE6E6"/>
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>
