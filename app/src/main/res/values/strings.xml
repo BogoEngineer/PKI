@@ -28,4 +28,5 @@ Section 1.10.33 of "de Finibus Bonorum et Malorum", written by Cicero in 45 BC
     <string name="notify">Notifications</string>
     <string name="reset">Reset checked supplements</string>
     <string name="dark">Dark theme</string>
+    <string name="user_info_key">userInfo</string>
 </resources>

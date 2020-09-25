@@ -13,19 +13,31 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.navigation.NavigationView
+import com.squareup.picasso.Picasso
 import com.veskekatke.healthformula.R
+import com.veskekatke.healthformula.presentation.contract.MainContract
 import com.veskekatke.healthformula.presentation.view.fragments.HomeFragment
+import com.veskekatke.healthformula.presentation.viewmodel.SupplementViewModel
+import com.veskekatke.healthformula.presentation.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header.*
+import org.koin.androidx.viewmodel.compat.SharedViewModelCompat.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
+import timber.log.Timber
 import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
     lateinit var toggle : ActionBarDrawerToggle
     lateinit var navController : NavController
     var wantExit = false
+
+    private val userViewModel : MainContract.UserViewModel by viewModel<UserViewModel>()
 
     companion object {
         //image pick code
@@ -42,6 +54,26 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.O
     private fun init(){
         initNavBar()
         setListeners()
+        initObservers()
+    }
+
+    private fun initObservers(){
+        userViewModel.user.observe(this, Observer {
+            if(userViewModel.user.value?.image != null){
+                Picasso
+                    .get()
+                    .load(userViewModel.user.value?.image)
+                    .error(R.drawable.undefined_profile_pic)
+                    .into(profile_image)
+            }else {
+                Picasso
+                    .get()
+                    .load(R.drawable.undefined_profile_pic)
+                    .into(profile_image)
+            }
+        })
+        userViewModel.fetch()
+        //userViewModel.get()
     }
 
     private fun setListeners(){

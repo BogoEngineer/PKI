@@ -3,55 +3,97 @@ package com.veskekatke.healthformula.presentation.viewmodel
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
+import com.veskekatke.healthformula.data.models.resource.Resource
 import com.veskekatke.healthformula.data.models.supplement.Supplement
+import com.veskekatke.healthformula.data.repositories.SupplementRepository
+import com.veskekatke.healthformula.data.repositories.SupplementRepositoryImpl
+import com.veskekatke.healthformula.presentation.contract.MainContract
+import com.veskekatke.healthformula.presentation.view.states.SupplementsState
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
+import timber.log.Timber
+import java.util.concurrent.TimeUnit
 
-class SupplementViewModel : ViewModel(){
+class SupplementViewModel(
+    private val supplementRepository: SupplementRepository
+) : ViewModel(), MainContract.SupplementViewModel{
 
-    private val supplements : MutableLiveData<List<Supplement>> = MutableLiveData()
-
-    private val mySupplementLists : MutableLiveData<List<List<Supplement>>> = MutableLiveData()
-
-    private val supplementList : MutableList<Supplement> = mutableListOf<Supplement>()
+    private val subscriptions = CompositeDisposable()
+    override val supplementsState: MutableLiveData<SupplementsState> = MutableLiveData<SupplementsState>()
+    private val publishSubject: PublishSubject<String> = PublishSubject.create()
 
     init {
-        for (i in 1..100) {
-            val supp = Supplement(
-                i,
-                "Ime $i",
-                "Neki baja",
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-                "https://lithub.com/wp-content/uploads/2019/03/pills.jpg"
-            )
-            supplementList.add(supp)
-        }
-
-        val listToSubmit = mutableListOf<Supplement>()
-        listToSubmit.addAll(supplementList)
-        supplements.value = listToSubmit
-
-        val bigDummyList = mutableListOf<List<Supplement>>()
-        for (i in 0..7){
-            val dummyList = mutableListOf<Supplement>()
-            for (j in 1..5){
-                val supp = Supplement(
-                    j,
-                    "Ime $j",
-                    "Neki baja $j",
-                    "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum.",
-                    "https://lithub.com/wp-content/uploads/2019/03/pills.jpg"
-                )
-                dummyList.add(supp)
+        val subscription = publishSubject
+            .debounce(200, TimeUnit.MILLISECONDS)
+            .distinctUntilChanged()
+            .switchMap {
+                supplementRepository
+                    .getAllByName(it)
+                    .subscribeOn(Schedulers.io())
+                    .observeOn(AndroidSchedulers.mainThread())
+                    .doOnError {
+                        Timber.e("Error in publish subject")
+                        Timber.e(it)
+                    }
             }
-            bigDummyList.add(dummyList)
-        }
-        mySupplementLists.value = bigDummyList
+            .subscribe(
+                {
+                    supplementsState.value = SupplementsState.Success(it)
+                },
+                {
+                    supplementsState.value = SupplementsState.Error("Error happened while fetching data from db")
+                    Timber.e(it)
+                }
+            )
+        subscriptions.add(subscription)
     }
 
-    fun getAllSupplements() : LiveData<List<Supplement>> {
-        return supplements
+    override fun fetchAllSupplements() {
+        val subscription = supplementRepository
+            .fetchAll()
+            .startWith(Resource.Loading()) // set state on loading
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    when(it) {
+                        is Resource.Loading -> supplementsState.value = SupplementsState.Loading
+                        is Resource.Success -> supplementsState.value = SupplementsState.DataFetched
+                        is Resource.Error -> supplementsState.value = SupplementsState.Error("Error happened while fetching data from the server")
+                    }
+                },
+                {
+                    supplementsState.value = SupplementsState.Error("Error happened while fetching data from the server")
+                    Timber.e(it)
+                }
+            )
+        subscriptions.add(subscription)
+    }
+
+    override fun getAllSupplements() {
+        val subscription = supplementRepository
+            .getAll()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    supplementsState.value = SupplementsState.Success(it)
+                },
+                {
+                    supplementsState.value = SupplementsState.Error("Error happened while fetching data from db")
+                    Timber.e(it)
+                }
+            )
+        subscriptions.add(subscription)
+    }
+
+    override fun getSupplementsByName(name: String) {
+        publishSubject.onNext(name)
     }
 
     fun getMySupplements() : LiveData<List<List<Supplement>>>{
-        return mySupplementLists
+        return MutableLiveData<List<List<Supplement>>>()
     }
 }

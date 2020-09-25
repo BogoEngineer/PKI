@@ -1,7 +1,7 @@
 package com.veskekatke.healthformula.data.models.foodItem
 
-data class FoodItem(
-    val id : Int,
+data class FoodItemResponse(
+    val _id : String,
     val name : String,
     val description : String
 )

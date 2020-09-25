@@ -3,8 +3,8 @@ package com.veskekatke.healthformula.presentation.view.fragments
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -13,20 +13,21 @@ import com.google.android.material.navigation.NavigationView
 import com.google.gson.Gson
 import com.veskekatke.healthformula.R
 import com.veskekatke.healthformula.data.models.supplement.Supplement
-import com.veskekatke.healthformula.presentation.view.recycler.adapter.PostAdapter
+import com.veskekatke.healthformula.presentation.contract.MainContract
 import com.veskekatke.healthformula.presentation.view.recycler.adapter.SupplementAdapter
-import com.veskekatke.healthformula.presentation.view.recycler.diff.PostDiffItemCallback
 import com.veskekatke.healthformula.presentation.view.recycler.diff.SupplementDiffItemCallback
+import com.veskekatke.healthformula.presentation.view.states.SupplementsState
 import com.veskekatke.healthformula.presentation.viewmodel.SupplementViewModel
 import kotlinx.android.synthetic.main.fragment_allsupplements.*
-import kotlinx.android.synthetic.main.fragment_home.*
+import okhttp3.internal.wait
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import timber.log.Timber
 
 class AllSupplementsFragment : Fragment(R.layout.fragment_allsupplements){
 
     private lateinit var currentSupplement : Supplement
 
-    private val supplementViewModel : SupplementViewModel by viewModels()
+    private val supplementViewModel : MainContract.SupplementViewModel by sharedViewModel<SupplementViewModel> ()
 
     private lateinit var supplementAdapter : SupplementAdapter
 
@@ -73,18 +74,45 @@ class AllSupplementsFragment : Fragment(R.layout.fragment_allsupplements){
                 super.onScrolled(recyclerView, dx, dy)
             }
         })
+
+        searchSupplementEt.doAfterTextChanged {
+            val filter = it.toString()
+            supplementViewModel.getSupplementsByName(filter)
+        }
     }
 
     private fun initObservers(){
-        supplementViewModel.getAllSupplements().observe(viewLifecycleOwner, Observer {
-            supplementAdapter.submitList(it)
-            currentSupplement = supplementAdapter.currentList[0]
-            requireActivity().supportFragmentManager.beginTransaction()
-                .add(R.id.supplementDetailsFr, SupplementDetailsFragment(currentSupplement))
-                .commit()
-            /*(childFragmentManager.findFragmentByTag("supplementDetailsTag") as SupplementDetailsFragment)
-                .updateSupplement(currentSupplement)*/
+        supplementViewModel.supplementsState.observe(viewLifecycleOwner, Observer {
+            renderState(it)
         })
+
+        supplementViewModel.getAllSupplements()
+        supplementViewModel.fetchAllSupplements()
     }
 
+    private fun renderState(state: SupplementsState) {
+        when (state) {
+            is SupplementsState.Success -> {
+                showLoadingState(false)
+                supplementAdapter.submitList(state.supplements)
+                currentSupplement = state.supplements[0]
+                requireActivity().supportFragmentManager.beginTransaction()
+                    .add(R.id.supplementDetailsFr, SupplementDetailsFragment(currentSupplement))
+                    .commit()
+            }
+            is SupplementsState.Error -> {
+                showLoadingState(false)
+                //Toast.makeText(context, state.message as String, Toast.LENGTH_SHORT).show()
+            }
+            is SupplementsState.DataFetched -> {
+                showLoadingState(false)
+                //Toast.makeText(context, "Fresh data fetched from the server", Toast.LENGTH_LONG).show()
+            }
+            is SupplementsState.Loading -> {
+                showLoadingState(true)
+            }
+        }
+    }
+
+    private fun showLoadingState(loading: Boolean){}
 }

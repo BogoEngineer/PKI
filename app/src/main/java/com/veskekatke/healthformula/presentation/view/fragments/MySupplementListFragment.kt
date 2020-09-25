@@ -10,17 +10,21 @@ import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.veskekatke.healthformula.R
+import com.veskekatke.healthformula.data.models.supplement.Supplement
+import com.veskekatke.healthformula.presentation.contract.MainContract
 import com.veskekatke.healthformula.presentation.view.recycler.adapter.SupplementAdapter
 import com.veskekatke.healthformula.presentation.view.recycler.diff.SupplementDiffItemCallback
 import com.veskekatke.healthformula.presentation.viewmodel.SupplementViewModel
+import com.veskekatke.healthformula.presentation.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_home.*
 import kotlinx.android.synthetic.main.fragment_mysupplementlist.*
+import org.koin.androidx.viewmodel.compat.SharedViewModelCompat
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 
-class MySupplementListFragment(private val list_id : Int, private val title : String) : Fragment(R.layout.fragment_mysupplementlist){
+class MySupplementListFragment(private val list : List<Supplement>, private val title : String) : Fragment(R.layout.fragment_mysupplementlist){
     private var open : Boolean = false
-
-    private val supplementViewModel : SupplementViewModel by viewModels()
 
     private lateinit var supplementAdapter : SupplementAdapter
 
@@ -61,9 +65,7 @@ class MySupplementListFragment(private val list_id : Int, private val title : St
     }
 
     private fun initObservers(){
-        supplementViewModel.getMySupplements().observe(viewLifecycleOwner, Observer {
-            supplementAdapter.submitList(it[list_id])
-        })
+        supplementAdapter.submitList(list)
     }
 
 }

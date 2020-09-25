@@ -2,6 +2,7 @@ apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
 apply plugin: 'kotlin-android-extensions'
 apply plugin: "androidx.navigation.safeargs.kotlin"
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion 30
@@ -31,6 +32,7 @@ android {
 
 dependencies {
     def nav_version = "2.3.0"
+    def room_version = "2.2.5"
 
     implementation fileTree(dir: "libs", include: ["*.jar"])
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$kotlin_version"
@@ -51,4 +53,51 @@ dependencies {
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
     implementation 'com.google.code.gson:gson:2.8.6' // json to gson
+
+    // Rx
+    implementation "io.reactivex.rxjava2:rxjava:2.2.9"
+    implementation "io.reactivex.rxjava2:rxandroid:2.1.0"
+
+    // Koin
+    def koinVersion = '2.1.5'
+    implementation "org.koin:koin-android:$koinVersion"
+    implementation "org.koin:koin-androidx-scope:$koinVersion"
+    implementation "org.koin:koin-androidx-viewmodel:$koinVersion"
+    implementation "org.koin:koin-androidx-fragment:$koinVersion"
+    implementation "org.koin:koin-androidx-ext:$koinVersion"
+    testImplementation "org.koin:koin-test:$koinVersion"
+
+    /* DATA */
+
+    // Retrofit
+    def retrofitVersion = '2.6.2'
+    implementation "com.squareup.retrofit2:retrofit:${retrofitVersion}"
+    implementation "com.squareup.retrofit2:adapter-rxjava2:${retrofitVersion}"
+    implementation "com.squareup.retrofit2:converter-moshi:${retrofitVersion}"
+
+    // okHTTP
+    def okHttpVersion = '4.2.2'
+    implementation "com.squareup.okhttp3:okhttp:$okHttpVersion"
+    implementation "com.squareup.okhttp3:logging-interceptor:$okHttpVersion"
+    implementation "com.squareup.okhttp3:okhttp-urlconnection:$okHttpVersion"
+
+    // Moshi
+    implementation "com.squareup.moshi:moshi-adapters:1.8.0"
+    // Do not update codegen version it will produce compile error when used with moshi retrofit converter!
+    // https://stackoverflow.com/questions/54991041/difficulty-using-moshis-kotlin-codegen
+    kapt("com.squareup.moshi:moshi-kotlin-codegen:1.8.0")
+
+    // Room
+    def roomVersion = '2.2.5'
+    implementation "androidx.room:room-runtime:$roomVersion"
+    kapt "androidx.room:room-compiler:$roomVersion"
+    implementation "androidx.room:room-rxjava2:$roomVersion"
+
+    /* DEBUG */
+
+    // Stetho
+    implementation 'com.facebook.stetho:stetho:1.5.1'
+    implementation 'com.facebook.stetho:stetho-okhttp3:1.5.1'
+    implementation 'com.facebook.stetho:stetho-okhttp:1.5.1'
+    implementation 'com.facebook.stetho:stetho-urlconnection:1.5.1'
 }

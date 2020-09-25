@@ -1,33 +1,59 @@
 package com.veskekatke.healthformula.presentation.viewmodel
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.veskekatke.healthformula.data.models.post.Post
+import com.veskekatke.healthformula.data.models.resource.Resource
+import com.veskekatke.healthformula.data.repositories.PostRepository
+import com.veskekatke.healthformula.presentation.contract.MainContract
+import com.veskekatke.healthformula.presentation.view.states.PostsState
+import io.reactivex.android.schedulers.AndroidSchedulers
+import io.reactivex.disposables.CompositeDisposable
+import io.reactivex.schedulers.Schedulers
+import timber.log.Timber
 
-class PostViewModel : ViewModel(){
+class PostViewModel(
+    private val postRepository : PostRepository
+) : ViewModel(), MainContract.PostViewModel{
 
-    private val posts : MutableLiveData<List<Post>> = MutableLiveData()
+    private val subscriptions = CompositeDisposable()
+    override val postsState: MutableLiveData<PostsState> = MutableLiveData()
 
-    private val postList : MutableList<Post> = mutableListOf()
-
-    init {
-        for (i in 1..100) {
-            val post = Post(
-                i,
-                "Ime $i",
-                "https://electric-fun.com/wp-content/uploads/2020/01/sony-car-796x418-1.jpg",
-                "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+    override fun fetchAllPosts() {
+        val subscription = postRepository
+            .fetchAll()
+            .startWith(Resource.Loading()) // set state on loading
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    when(it) {
+                        is Resource.Loading -> postsState.value = PostsState.Loading
+                        is Resource.Success -> postsState.value = PostsState.DataFetched
+                        is Resource.Error -> postsState.value = PostsState.Error("Error happened while fetching data from the server")
+                    }
+                },
+                {
+                    postsState.value = PostsState.Error("Error happened while fetching data from the server")
+                    Timber.e(it)
+                }
             )
-            postList.add(post)
-        }
-        val listToSubmit = mutableListOf<Post>()
-        listToSubmit.addAll(postList)
-        posts.value = listToSubmit
+        subscriptions.add(subscription)
     }
 
-    fun getPosts() : LiveData<List<Post>>{
-        return posts
+    override fun getAllPosts() {
+        val subscription = postRepository
+            .getAll()
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe(
+                {
+                    postsState.value = PostsState.Success(it)
+                },
+                {
+                    postsState.value = PostsState.Error("Error happened while fetching data from db")
+                    Timber.e(it)
+                }
+            )
+        subscriptions.add(subscription)
     }
-
 }

@@ -6,25 +6,12 @@
     android:background="@color/app_background"
     >
 
-    <TextView
-        android:id="@+id/postTv"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        app:layout_constraintTop_toTopOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:text="Posts"
-        android:textSize="35dp"></TextView>
-
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/postRv"
+        app:layout_constraintTop_toTopOf="parent"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        app:layout_constraintTop_toBottomOf="@id/postTv"
         app:layout_constraintLeft_toLeftOf="parent"
-        android:layout_marginTop="20dp"
     />
 </androidx.constraintlayout.widget.ConstraintLayout>
 

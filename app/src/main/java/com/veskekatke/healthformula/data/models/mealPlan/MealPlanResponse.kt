@@ -1,7 +1,7 @@
 package com.veskekatke.healthformula.data.models.mealPlan
 
-data class MealPlan(
-    val id : Int,
+data class MealPlanResponse(
+    val _id : String,
     val name : String,
     val description : String
 )

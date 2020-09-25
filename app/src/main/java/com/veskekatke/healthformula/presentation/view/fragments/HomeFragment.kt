@@ -19,18 +19,21 @@ import com.google.android.material.navigation.NavigationView
 import com.google.gson.Gson
 import com.veskekatke.healthformula.R
 import com.veskekatke.healthformula.data.models.post.Post
+import com.veskekatke.healthformula.presentation.contract.MainContract
 import com.veskekatke.healthformula.presentation.view.recycler.adapter.PostAdapter
 import com.veskekatke.healthformula.presentation.view.recycler.adapter.SupplementAdapter
 import com.veskekatke.healthformula.presentation.view.recycler.diff.PostDiffItemCallback
+import com.veskekatke.healthformula.presentation.view.states.PostsState
 import com.veskekatke.healthformula.presentation.viewmodel.PostViewModel
 import com.veskekatke.healthformula.presentation.viewmodel.SupplementViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import timber.log.Timber
 
 class HomeFragment : Fragment(R.layout.fragment_home){
 
-    private val postViewModel: PostViewModel by viewModels()
+    private val postViewModel: MainContract.PostViewModel by sharedViewModel<PostViewModel> ()
 
     private lateinit var postAdapter : PostAdapter
 
@@ -63,9 +66,34 @@ class HomeFragment : Fragment(R.layout.fragment_home){
     }
 
     private fun initObservers(){
-        postViewModel.getPosts().observe(viewLifecycleOwner, Observer {
-            postAdapter.submitList(it)
+        postViewModel.postsState.observe(viewLifecycleOwner, Observer {
+            renderState(it)
         })
+
+        postViewModel.getAllPosts()
+        postViewModel.fetchAllPosts()
     }
+
+    private fun renderState(state: PostsState) {
+        when (state) {
+            is PostsState.Success -> {
+                showLoadingState(false)
+                postAdapter.submitList(state.posts)
+            }
+            is PostsState.Error -> {
+                showLoadingState(false)
+                //Toast.makeText(context, state.message as String, Toast.LENGTH_SHORT).show()
+            }
+            is PostsState.DataFetched -> {
+                showLoadingState(false)
+                //Toast.makeText(context, "Fresh data fetched from the server", Toast.LENGTH_LONG).show()
+            }
+            is PostsState.Loading -> {
+                showLoadingState(true)
+            }
+        }
+    }
+
+    private fun showLoadingState(loading: Boolean){}
 
 }

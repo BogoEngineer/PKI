@@ -1,7 +1,7 @@
 package com.veskekatke.healthformula.data.models.supplement
 
 data class Supplement(
-    val id : Int,
+    val id : String,
     val name : String,
     val manufacturer : String,
     val description : String,
