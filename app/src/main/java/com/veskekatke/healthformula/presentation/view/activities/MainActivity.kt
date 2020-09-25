@@ -59,10 +59,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.O
 
     private fun initObservers(){
         userViewModel.user.observe(this, Observer {
-            if(userViewModel.user.value?.image != null){
+            if(userViewModel.user.value?.profile_picture != null){
                 Picasso
                     .get()
-                    .load(userViewModel.user.value?.image)
+                    .load(userViewModel.user.value?.profile_picture)
                     .error(R.drawable.undefined_profile_pic)
                     .into(profile_image)
             }else {

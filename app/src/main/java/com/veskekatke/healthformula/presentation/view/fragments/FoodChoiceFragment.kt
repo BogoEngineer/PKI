@@ -27,7 +27,6 @@ class FoodChoiceFragment : Fragment(R.layout.fragment_foodchoice){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.findViewById<NavigationView>(R.id.navView)?.setCheckedItem(R.id.home)
         init()
     }
 

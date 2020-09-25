@@ -21,7 +21,6 @@ class CurrentPlanFragment : Fragment(R.layout.fragment_currentplan){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.findViewById<NavigationView>(R.id.navView)?.setCheckedItem(R.id.home)
         init()
     }
 

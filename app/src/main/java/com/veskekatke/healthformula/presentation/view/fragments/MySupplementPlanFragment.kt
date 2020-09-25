@@ -52,7 +52,7 @@ class MySupplementPlanFragment : Fragment(R.layout.fragment_mysupplementplan){
                 it.image
             )
         }, "Before breakfast"))
-        /*fragmentMangerTransaction.add(R.id.after_breakfastFr, MySupplementListFragment(userViewModel.user.value!!.phase.supplement_plan.after_breakfast.map {
+        fragmentMangerTransaction.add(R.id.after_breakfastFr, MySupplementListFragment(userViewModel.user.value!!.phase.supplement_plan.after_breakfast.map {
             Supplement(
                 it._id,
                 it.name,
@@ -114,7 +114,7 @@ class MySupplementPlanFragment : Fragment(R.layout.fragment_mysupplementplan){
                 it.description,
                 it.image
             )
-        }, "After dinner"))*/
+        }, "After dinner"))
         fragmentMangerTransaction.commit()
     }
 }

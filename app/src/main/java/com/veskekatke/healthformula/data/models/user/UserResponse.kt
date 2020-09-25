@@ -9,7 +9,7 @@ data class UserResponse(
     val last_name: String,
     val email: String,
     val password: String,
-    val image: String,
+    val profile_picture: String,
     val content: String,
     val phase: PhaseResponse,
     val date_created: String
