@@ -2,17 +2,23 @@ package com.veskekatke.healthformula.presentation.view.activities
 
 import android.Manifest
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
+import android.content.SharedPreferences
 import android.content.pm.PackageManager
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.view.ViewGroup
+import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.core.view.GravityCompat
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
@@ -22,20 +28,41 @@ import com.squareup.picasso.Picasso
 import com.veskekatke.healthformula.R
 import com.veskekatke.healthformula.presentation.contract.MainContract
 import com.veskekatke.healthformula.presentation.view.fragments.HomeFragment
+import com.veskekatke.healthformula.presentation.view.fragments.SettingsFragment
 import com.veskekatke.healthformula.presentation.viewmodel.SupplementViewModel
 import com.veskekatke.healthformula.presentation.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.nav_header.*
+import okhttp3.internal.checkOffsetAndCount
 import org.koin.androidx.viewmodel.compat.SharedViewModelCompat.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
+import org.koin.core.KoinComponent
+import org.koin.core.inject
+import org.w3c.dom.Text
 import timber.log.Timber
 import kotlin.system.exitProcess
 
-class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.OnNavigationItemSelectedListener, View.OnClickListener {
+class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, KoinComponent {
     lateinit var toggle : ActionBarDrawerToggle
     lateinit var navController : NavController
     var wantExit = false
+
+    private lateinit var starterIntent : Intent
+
+
+    private val sharedPref : SharedPreferences by inject()
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private val onSharedPreferenceChangedListener =
+        SharedPreferences.OnSharedPreferenceChangeListener { p0, p1 ->
+            val theme = sharedPref.getString("theme", "")
+            fragmentField.background= if(theme == "dark")
+                getDrawable(R.color.app_background_dark) else getDrawable(R.color.app_background_light)
+            finish()
+            startActivity(starterIntent.putExtra("fromSettings",true))
+        }
+
 
     private val userViewModel : MainContract.UserViewModel by viewModel<UserViewModel>()
 
@@ -46,15 +73,51 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.O
         private val PERMISSION_CODE = 1001;
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     override fun onCreate(savedInstanceState: Bundle?) {
+        setTheme(if(sharedPref.getString("theme", "")=="dark") R.style.AppThemeDark else R.style.AppThemeLight);
         super.onCreate(savedInstanceState)
+        starterIntent = intent
         init()
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun init(){
+        initUI()
         initNavBar()
         setListeners()
         initObservers()
+        if(intent.getBooleanExtra("fromSettings", false)) {
+            navController.navigate(R.id.homeFragment)
+            navController.navigate(R.id.settingsFragment)
+        }
+    }
+
+    /*@RequiresApi(Build.VERSION_CODES.M)
+    private fun deepChangeTextColor(parentLayout: ViewGroup, colorId: Int){
+        for(count in 0..parentLayout.childCount){
+            val view = parentLayout.getChildAt(count)
+            if(view is TextView){
+                (view as TextView).setTextColor(getColor(colorId))
+            }
+            else if(view is ViewGroup){
+                deepChangeTextColor(view as ViewGroup, colorId)
+            }
+        }
+    }*/
+
+    @RequiresApi(Build.VERSION_CODES.M)
+    private fun initUI(){
+        val theme = sharedPref.getString("theme","")
+        if(theme =="") {
+            with((sharedPref.edit())){
+                putString("theme", "light")
+                commit()
+            }
+        }
+        fragmentField.background= if(theme == "dark")
+            getDrawable(R.color.app_background_dark) else getDrawable(R.color.app_background_light)
+        this.setTheme(if(theme=="dark") R.style.AppThemeDark else R.style.AppThemeLight)
     }
 
     private fun initObservers(){
@@ -74,6 +137,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.O
         })
         userViewModel.fetch()
         //userViewModel.get()
+
+
+        sharedPref.registerOnSharedPreferenceChangeListener(onSharedPreferenceChangedListener)
     }
 
     private fun setListeners(){

@@ -11,13 +11,17 @@ import com.google.android.material.navigation.NavigationView
 import com.google.gson.Gson
 import com.squareup.picasso.Picasso
 import com.veskekatke.healthformula.R
+import com.veskekatke.healthformula.presentation.contract.MainContract
 import com.veskekatke.healthformula.presentation.viewmodel.MealPlanViewModel
+import com.veskekatke.healthformula.presentation.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_currentplan.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import org.koin.androidx.viewmodel.compat.SharedViewModelCompat.sharedViewModel
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class CurrentPlanFragment : Fragment(R.layout.fragment_currentplan){
 
-    private val mealPlanViewModel : MealPlanViewModel by viewModels()
+    private val userViewModel : MainContract.UserViewModel by sharedViewModel<UserViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -37,9 +41,10 @@ class CurrentPlanFragment : Fragment(R.layout.fragment_currentplan){
     }
 
     private fun initObservers(){
-        mealPlanViewModel.getMealPlan().observe(viewLifecycleOwner, Observer {
-            titleTv.text = it.name
-            //contentMpTv.text = it.description
+        userViewModel.user.observe(viewLifecycleOwner, Observer {
+            titleTv.text = it.phase.meal_plan.name
+            contentMpTv.text = it.phase.meal_plan.description
         })
+        userViewModel.get()
     }
 }

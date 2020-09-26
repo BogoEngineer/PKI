@@ -1,12 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <color name="colorPrimary">#529eba</color>
+    <color name="darkThemePrimary">#1E586E</color>
     <color name="colorPrimaryDark">#396d80</color>
+    <color name="darkThemePrimaryDark">#13323E</color>
     <color name="colorAccent">#03DAC5</color>
+    <color name="darkThemeAccent">#016E63</color>
     <color name="LogInBackground">#bce4eb</color>
     <color name="white">#ffffff</color>
-    <color name="app_background">#C3DDF8</color>
+    <color name="app_background_light">#C3DDF8</color>
+    <color name="app_background_dark">#0C4E93</color>
     <color name="black">#000000</color>
     <color name="green">#3C3F41</color>
     <color name="red">#F40A5A</color>
+    <color name="darkdarkblue">#3D768C</color>
+    <color name="darkblue">#4A8FAA</color>
+    <color name="blue">#4F8BA1</color>
+    <color name="lightblue">#5692A8</color>
+    <color name="lightlightblue">#70ADC3</color>
 </resources>

@@ -15,13 +15,14 @@ import com.veskekatke.healthformula.presentation.contract.MainContract
 import com.veskekatke.healthformula.presentation.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.nav_header.*
 import org.koin.androidx.viewmodel.compat.SharedViewModelCompat
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import timber.log.Timber
 import kotlin.concurrent.timer
 
 class MySupplementPlanFragment : Fragment(R.layout.fragment_mysupplementplan){
 
-    private val userViewModel : UserViewModel by viewModel()
+    private val userViewModel : MainContract.UserViewModel by sharedViewModel<UserViewModel>()
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)

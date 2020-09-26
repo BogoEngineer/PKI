@@ -10,17 +10,20 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.navigation.NavigationView
 import com.google.gson.Gson
 import com.veskekatke.healthformula.R
+import com.veskekatke.healthformula.presentation.contract.MainContract
 import com.veskekatke.healthformula.presentation.view.recycler.adapter.FoodItemAdapter
 import com.veskekatke.healthformula.presentation.view.recycler.adapter.PostAdapter
 import com.veskekatke.healthformula.presentation.view.recycler.diff.FoodItemDiffItemCallback
 import com.veskekatke.healthformula.presentation.view.recycler.diff.PostDiffItemCallback
 import com.veskekatke.healthformula.presentation.viewmodel.FoodItemViewModel
 import com.veskekatke.healthformula.presentation.viewmodel.PostViewModel
+import com.veskekatke.healthformula.presentation.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_foodchoice.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class FoodChoiceFragment : Fragment(R.layout.fragment_foodchoice){
-    private val foodItemViewModel: FoodItemViewModel by viewModels()
+    private val userViewModel: MainContract.UserViewModel by sharedViewModel<UserViewModel>()
 
     private lateinit var foodItemAllowedAdapter: FoodItemAdapter
     private lateinit var foodItemNotAllowedAdapter: FoodItemAdapter
@@ -54,12 +57,10 @@ class FoodChoiceFragment : Fragment(R.layout.fragment_foodchoice){
     }
 
     private fun initObservers(){
-        foodItemViewModel.getAllowed().observe(viewLifecycleOwner, Observer {
-            foodItemAllowedAdapter.submitList(it)
+        userViewModel.user.observe(viewLifecycleOwner, Observer {
+            foodItemAllowedAdapter.submitList(it.phase.food_choice.allowed)
+            foodItemNotAllowedAdapter.submitList(it.phase.food_choice.not_allowed)
         })
-
-        foodItemViewModel.getNotAllowed().observe(viewLifecycleOwner, Observer{
-            foodItemNotAllowedAdapter.submitList(it)
-        })
+        userViewModel.get()
     }
 }

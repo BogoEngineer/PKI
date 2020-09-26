@@ -34,5 +34,5 @@
         app:layout_anchor="@id/topTab"
         app:layout_constraintTop_toBottomOf="@+id/topTab"
         app:layout_behavior="@string/appbar_scrolling_view_behavior"
-        android:layoutDirection="rtl"/>
+        android:layoutDirection="ltr"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

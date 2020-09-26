@@ -3,7 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="@color/app_background">
+    >
 
     <TextView
         android:id="@+id/notifyTv"
@@ -80,7 +80,7 @@
         app:layout_constraintTop_toBottomOf="@id/break2"
         app:layout_constraintRight_toRightOf="parent"
         android:layout_marginRight="5dp"
-        android:checked="true" />
+        android:checked="false" />
 
     <View
         android:id="@+id/break3"
