@@ -26,9 +26,7 @@ class UserViewModel(
             .subscribeOn(Schedulers.io())
             .observeOn(AndroidSchedulers.mainThread())
             .subscribe({
-                //Timber.e("DOHVACENO: " + it.toString())
                 user.value = it.data
-                Timber.e("dohv: "+it.data.toString())
             }, {
                 Timber.e(it.toString())
             })
@@ -37,6 +35,5 @@ class UserViewModel(
 
     override fun get() {
         user.value = userRepository.get()
-        //Timber.e("DOHVACENO: " + user.value.toString())
     }
 }

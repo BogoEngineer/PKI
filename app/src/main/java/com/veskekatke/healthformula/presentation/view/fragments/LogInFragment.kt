@@ -1,14 +1,23 @@
 package com.veskekatke.healthformula.presentation.view.fragments
 
+import android.graphics.LinearGradient
+import android.graphics.Shader
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.PaintDrawable
+import android.graphics.drawable.ShapeDrawable
+import android.graphics.drawable.shapes.RectShape
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.veskekatke.healthformula.R
+import com.veskekatke.healthformula.presentation.view.activities.MainActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_login.view.*
@@ -35,6 +44,28 @@ class LogInFragment : Fragment(R.layout.fragment_login){
     }
 
     private fun init(){
+        val sfL = object: ShapeDrawable.ShaderFactory(){
+            @RequiresApi(Build.VERSION_CODES.M)
+            override fun resize(p0: Int, p1: Int): Shader {
+                val lg = LinearGradient(0.toFloat(),0.toFloat(),0.toFloat(), topView.height.toFloat(),
+                    intArrayOf(
+                        requireActivity().getColor(R.color.navViewFade1Dark),
+                        requireActivity().getColor(R.color.navViewFade2Dark),
+                        requireActivity().getColor(R.color.navViewFade2Dark),
+                        requireActivity().getColor(R.color.navViewFade3Dark),
+                        requireActivity().getColor(R.color.navViewFade3Dark)),
+                    floatArrayOf(0.20f, 0.40f, 0.50f, 0.75f, 1f),
+                    Shader.TileMode.REPEAT)
+                return lg
+            }
+
+        }
+        val pL = PaintDrawable()
+        pL.shape = RectShape()
+        pL.shaderFactory = sfL
+        topView.background = pL as Drawable
+
+
         if(activity is AppCompatActivity){
             (activity as AppCompatActivity).supportActionBar?.setDisplayHomeAsUpEnabled(false)
         }

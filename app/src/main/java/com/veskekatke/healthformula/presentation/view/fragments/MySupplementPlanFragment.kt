@@ -36,8 +36,6 @@ class MySupplementPlanFragment : Fragment(R.layout.fragment_mysupplementplan){
     }
 
     private fun initObservers(){
-        userViewModel.user.observe(viewLifecycleOwner, Observer {
-        })
         userViewModel.get()
     }
 

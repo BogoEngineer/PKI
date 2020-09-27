@@ -6,6 +6,12 @@ import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
 import android.content.pm.PackageManager
+import android.graphics.LinearGradient
+import android.graphics.Shader
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.PaintDrawable
+import android.graphics.drawable.ShapeDrawable
+import android.graphics.drawable.shapes.RectShape
 import android.os.Build
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -32,6 +38,7 @@ import com.veskekatke.healthformula.presentation.view.fragments.SettingsFragment
 import com.veskekatke.healthformula.presentation.viewmodel.SupplementViewModel
 import com.veskekatke.healthformula.presentation.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_main.*
+import kotlinx.android.synthetic.main.fragment_mysupplementlist.*
 import kotlinx.android.synthetic.main.nav_header.*
 import okhttp3.internal.checkOffsetAndCount
 import org.koin.androidx.viewmodel.compat.SharedViewModelCompat.sharedViewModel
@@ -48,19 +55,17 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.O
     lateinit var navController : NavController
     var wantExit = false
 
-    private lateinit var starterIntent : Intent
-
-
     private val sharedPref : SharedPreferences by inject()
 
     @RequiresApi(Build.VERSION_CODES.M)
     private val onSharedPreferenceChangedListener =
         SharedPreferences.OnSharedPreferenceChangeListener { p0, p1 ->
             val theme = sharedPref.getString("theme", "")
-            fragmentField.background= if(theme == "dark")
-                getDrawable(R.color.app_background_dark) else getDrawable(R.color.app_background_light)
-            finish()
-            startActivity(starterIntent.putExtra("fromSettings",true))
+            //fragmentField.background= if(theme == "dark") getDrawable(R.color.app_background_dark) else getDrawable(R.color.app_background_light)
+            //navView.background = if(theme == "dark") getDrawable(R.color.app_background_dark) else getDrawable(R.color.app_background_light)
+            setFadingBackground(theme=="dark")
+            setFadingNavbar(theme=="dark")
+            recreate()
         }
 
 
@@ -77,7 +82,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.O
     override fun onCreate(savedInstanceState: Bundle?) {
         setTheme(if(sharedPref.getString("theme", "")=="dark") R.style.AppThemeDark else R.style.AppThemeLight);
         super.onCreate(savedInstanceState)
-        starterIntent = intent
         init()
     }
 
@@ -87,10 +91,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.O
         initNavBar()
         setListeners()
         initObservers()
-        if(intent.getBooleanExtra("fromSettings", false)) {
-            navController.navigate(R.id.homeFragment)
-            navController.navigate(R.id.settingsFragment)
-        }
     }
 
     /*@RequiresApi(Build.VERSION_CODES.M)
@@ -106,6 +106,99 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.O
         }
     }*/
 
+    private fun setFadingBackground(dark: Boolean){
+        if(dark){
+            val sfB = object: ShapeDrawable.ShaderFactory(){
+                @RequiresApi(Build.VERSION_CODES.M)
+                override fun resize(p0: Int, p1: Int): Shader {
+                    val lg = LinearGradient(0.toFloat(),0.toFloat(),0.toFloat(), fragmentField.height.toFloat(),
+                        intArrayOf(
+                            getColor(R.color.navViewFade1Dark),
+                            getColor(R.color.navViewFade2Dark),
+                            getColor(R.color.navViewFade2Dark),
+                            getColor(R.color.navViewFade3Dark),
+                            getColor(R.color.navViewFade3Dark)),
+                        floatArrayOf(0.20f, 0.40f, 0.50f, 0.75f, 1f),
+                        Shader.TileMode.REPEAT)
+                    return lg
+                }
+
+            }
+            val pB = PaintDrawable()
+            pB.shape = RectShape()
+            pB.shaderFactory = sfB
+            fragmentField.background = pB as Drawable
+        }else{
+            val sfB = object: ShapeDrawable.ShaderFactory(){
+                @RequiresApi(Build.VERSION_CODES.M)
+                override fun resize(p0: Int, p1: Int): Shader {
+                    val lg = LinearGradient(0.toFloat(),0.toFloat(),0.toFloat(), fragmentField.height.toFloat(),
+                        intArrayOf(
+                            getColor(R.color.navViewFade1Light),
+                            getColor(R.color.navViewFade2Light),
+                            getColor(R.color.navViewFade3Light),
+                            getColor(R.color.navViewFade4Light),
+                            getColor(R.color.navViewFade5Light)),
+                        floatArrayOf(0.1f, 0.30f, 0.50f, 0.75f, 1f),
+                        Shader.TileMode.REPEAT)
+                    return lg
+                }
+
+            }
+            val pB = PaintDrawable()
+            pB.shape = RectShape()
+            pB.shaderFactory = sfB
+            fragmentField.background = pB as Drawable
+        }
+    }
+
+    private fun setFadingNavbar(dark: Boolean){
+        if(dark){
+            val sfN = object: ShapeDrawable.ShaderFactory(){
+                @RequiresApi(Build.VERSION_CODES.M)
+                override fun resize(p0: Int, p1: Int): Shader {
+                    val lg = LinearGradient(0.toFloat(),0.toFloat(),0.toFloat(), navView.height.toFloat(),
+                        intArrayOf(
+                            getColor(R.color.navViewFade1Dark),
+                            getColor(R.color.navViewFade2Dark),
+                            getColor(R.color.navViewFade2Dark),
+                            getColor(R.color.navViewFade3Dark),
+                            getColor(R.color.navViewFade3Dark)),
+                        floatArrayOf(0.20f, 0.40f, 0.50f, 0.75f, 1f),
+                        Shader.TileMode.REPEAT)
+                    return lg
+                }
+
+            }
+            val pN = PaintDrawable()
+            pN.shape = RectShape()
+            pN.shaderFactory = sfN
+            navView.background = pN as Drawable
+        }else{
+            val sfN = object: ShapeDrawable.ShaderFactory(){
+                @RequiresApi(Build.VERSION_CODES.M)
+                override fun resize(p0: Int, p1: Int): Shader {
+                    val lg = LinearGradient(0.toFloat(),0.toFloat(),0.toFloat(), navView.height.toFloat(),
+                        intArrayOf(
+                            getColor(R.color.navViewFade1Light),
+                            getColor(R.color.navViewFade2Light),
+                            getColor(R.color.navViewFade3Light),
+                            getColor(R.color.navViewFade4Light),
+                            getColor(R.color.navViewFade5Light)),
+                        floatArrayOf(0.1f, 0.30f, 0.50f, 0.75f, 1f),
+                        Shader.TileMode.REPEAT)
+                    return lg
+                }
+
+            }
+            val pN = PaintDrawable()
+            pN.shape = RectShape()
+            pN.shaderFactory = sfN
+            navView.background = pN as Drawable
+        }
+
+    }
+
     @RequiresApi(Build.VERSION_CODES.M)
     private fun initUI(){
         val theme = sharedPref.getString("theme","")
@@ -115,20 +208,23 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.O
                 commit()
             }
         }
-        fragmentField.background= if(theme == "dark")
-            getDrawable(R.color.app_background_dark) else getDrawable(R.color.app_background_light)
-        this.setTheme(if(theme=="dark") R.style.AppThemeDark else R.style.AppThemeLight)
+        //fragmentField.background= if(theme == "dark") getDrawable(R.color.app_background_dark) else getDrawable(R.color.app_background_light)
+
+        //navView.background = if(theme == "dark") getDrawable(R.color.app_background_dark) else getDrawable(R.color.app_background_light)
+        setFadingNavbar(theme=="dark")
+        setFadingBackground(theme=="dark")
     }
 
+    @RequiresApi(Build.VERSION_CODES.M)
     private fun initObservers(){
         userViewModel.user.observe(this, Observer {
-            if(userViewModel.user.value?.profile_picture != null){
+            if(userViewModel.user.value?.profile_picture != null && profile_image != null){
                 Picasso
                     .get()
                     .load(userViewModel.user.value?.profile_picture)
                     .error(R.drawable.undefined_profile_pic)
                     .into(profile_image)
-            }else {
+            }else if(profile_image != null && userViewModel.user.value?.profile_picture==null) {
                 Picasso
                     .get()
                     .load(R.drawable.undefined_profile_pic)

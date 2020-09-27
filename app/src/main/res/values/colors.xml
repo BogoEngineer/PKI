@@ -18,4 +18,12 @@
     <color name="blue">#4F8BA1</color>
     <color name="lightblue">#5692A8</color>
     <color name="lightlightblue">#70ADC3</color>
+    <color name="navViewFade3Dark">#4C8DC8</color>
+    <color name="navViewFade2Dark">#306CA1</color>
+    <color name="navViewFade1Dark">#1A4368</color>
+    <color name="navViewFade1Light">#287FCD</color>
+    <color name="navViewFade2Light">#56A3EA</color>
+    <color name="navViewFade3Light">#8AC2F4</color>
+    <color name="navViewFade4Light">#9FCBF3</color>
+    <color name="navViewFade5Light">#B9DAF8</color>
 </resources>

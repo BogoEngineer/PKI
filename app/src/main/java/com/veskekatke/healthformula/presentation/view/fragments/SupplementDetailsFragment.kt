@@ -8,7 +8,7 @@ import com.veskekatke.healthformula.R
 import com.veskekatke.healthformula.data.models.supplement.Supplement
 import kotlinx.android.synthetic.main.fragment_supplementdetails.*
 
-class SupplementDetailsFragment(supplement : Supplement) : Fragment(R.layout.fragment_supplementdetails){
+class SupplementDetailsFragment(supplement : Supplement? = null) : Fragment(R.layout.fragment_supplementdetails){
 
     var supplement = supplement
 
@@ -18,18 +18,18 @@ class SupplementDetailsFragment(supplement : Supplement) : Fragment(R.layout.fra
     }
 
     private fun init(){
-        updateSupplement(supplement)
+        supplement?.let { updateSupplement(it) }
     }
 
     fun updateSupplement(supp : Supplement){
         supplement = supp
         Picasso
             .get()
-            .load(supplement.picture)
+            .load(supplement!!.picture)
             .into(supplementIv)
 
-        contentSuppTv.text = supplement.description
-        titleSuppTv.text = supplement.name
-        manufacturerSuppTv.text = supplement.manufacturer
+        contentSuppTv.text = supplement!!.description
+        titleSuppTv.text = supplement!!.name
+        manufacturerSuppTv.text = supplement!!.manufacturer
     }
 }
