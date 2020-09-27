@@ -20,46 +20,53 @@
             android:scaleType="centerCrop"
             />
 
-        <LinearLayout
-            app:layout_constraintTop_toBottomOf="@id/foodItemIv"
-            android:layout_marginTop="5dp"
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:id="@+id/fadingCard"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="vertical"
-            android:padding="16dp"
-            android:layout_marginBottom="40dp">
+            android:layout_height="0dp"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/foodItemIv">
+            <LinearLayout
+                android:layout_marginTop="5dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:padding="16dp"
+                android:layout_marginBottom="40dp">
 
-            <!-- Title, secondary and supporting text -->
-            <TextView
-                android:id="@+id/titleFoodItemTv"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:textAppearance="?attr/textAppearanceHeadline6"
-                />
-            <androidx.core.widget.NestedScrollView
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                <!-- Title, secondary and supporting text -->
                 <TextView
-                    android:id="@+id/contentFoodItemTv"
+                    android:id="@+id/titleFoodItemTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="16dp"
-                    android:textAppearance="?attr/textAppearanceBody2"
-                    android:textColor="?android:attr/textColorSecondary"
+                    android:textAppearance="?attr/textAppearanceHeadline6"
                     />
-            </androidx.core.widget.NestedScrollView>
-        </LinearLayout>
-        <com.google.android.material.button.MaterialButton
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintLeft_toLeftOf="parent"
-            android:layout_marginBottom="5dp"
-            android:layout_marginLeft="5dp"
-            android:id="@+id/closeFoodItemB"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/close"
-            style="?attr/borderlessButtonStyle"
-            />
+                <androidx.core.widget.NestedScrollView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content">
+                    <TextView
+                        android:id="@+id/contentFoodItemTv"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginTop="16dp"
+                        android:textAppearance="?attr/textAppearanceBody2"
+                        android:textColor="?android:attr/textColorSecondary"
+                        />
+                </androidx.core.widget.NestedScrollView>
+            </LinearLayout>
+            <com.google.android.material.button.MaterialButton
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintLeft_toLeftOf="parent"
+                android:layout_marginBottom="5dp"
+                android:layout_marginLeft="5dp"
+                android:id="@+id/closeFoodItemB"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/close"
+                android:textColor="@color/black"
+                style="?attr/"
+                />
+        </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
 </com.google.android.material.card.MaterialCardView>

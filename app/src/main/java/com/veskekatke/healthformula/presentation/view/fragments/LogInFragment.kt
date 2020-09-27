@@ -44,6 +44,7 @@ class LogInFragment : Fragment(R.layout.fragment_login){
     }
 
     private fun init(){
+        (requireActivity() as MainActivity).supportActionBar!!.hide()
         val sfL = object: ShapeDrawable.ShaderFactory(){
             @RequiresApi(Build.VERSION_CODES.M)
             override fun resize(p0: Int, p1: Int): Shader {
@@ -86,6 +87,7 @@ class LogInFragment : Fragment(R.layout.fragment_login){
 
     private fun login(){
         navController.navigate(R.id.action_logInFragment_to_homeFragment)
+        (requireActivity() as MainActivity).supportActionBar!!.show()
     }
 
     private fun forgotPassword(){

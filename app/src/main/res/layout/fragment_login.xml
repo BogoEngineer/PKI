@@ -68,14 +68,19 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:focusableInTouchMode="true"
+                    android:focusable="true">
 
                     <TextView
+                        android:id="@+id/tvDummy"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:padding="10dp"
                         android:text="@string/enter_credentials"
-                        android:textAlignment="center"/>
+                        android:textAlignment="center"
+                        android:nextFocusUp="@id/tvDummy"
+                        android:nextFocusLeft="@id/tvDummy"/>
 
                     <com.google.android.material.textfield.TextInputLayout
                         style="@style/LoginTextInputLayoutStyle"
@@ -83,13 +88,16 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/username"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
                         >
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"/>
+                            android:layout_height="wrap_content"
+                            android:background="@drawable/background_et"
+                            android:focusedByDefault="false"
+                            />
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <com.google.android.material.textfield.TextInputLayout
@@ -99,14 +107,16 @@
                         android:layout_height="wrap_content"
                         app:passwordToggleEnabled="true"
                         android:hint="@string/password"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginRight="5dp"
+                        android:layout_marginLeft="15dp"
+                        android:layout_marginRight="15dp"
                         >
 
                         <com.google.android.material.textfield.TextInputEditText
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:inputType="textPassword"/>
+                            android:inputType="textPassword"
+                            android:background="@drawable/background_et"
+                            android:focusedByDefault="false"/>
                     </com.google.android.material.textfield.TextInputLayout>
 
                     <TextView
@@ -132,7 +142,7 @@
             android:textColor="@color/white"
             android:textAlignment="center"
             android:text="@string/logIn"
-            style="@style/AppThemeDark"/>
+            android:backgroundTint="@color/navViewFade2Dark"/>
 
         <TextView
             android:id="@+id/forgotPasswordLink"

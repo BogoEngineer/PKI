@@ -260,30 +260,37 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.O
         wantExit = false
         when(item.itemId){
             R.id.home -> {
+                supportActionBar!!.show()
                 navController.popBackStack(R.id.homeFragment, true)
                 navController.navigate(R.id.homeFragment)
             }
             R.id.allSupplements -> {
+                supportActionBar!!.show()
                 navController.popBackStack(R.id.homeFragment, false)
                 navController.navigate(R.id.allSupplementsFragment)
             }
             R.id.myMealPlan -> {
+                supportActionBar!!.show()
                 navController.popBackStack(R.id.homeFragment, false)
                 navController.navigate(R.id.myMealPlanFragment)
             }
             R.id.mySupplementPlan -> {
+                supportActionBar!!.show()
                 navController.popBackStack(R.id.homeFragment, false)
                 navController.navigate(R.id.mySupplementPlanFragment)
             }
             R.id.about -> {
+                supportActionBar!!.hide()
                 navController.popBackStack(R.id.homeFragment, false)
                 navController.navigate(R.id.aboutFragment)
             }
             R.id.logout -> {
+                supportActionBar!!.hide()
                 navController.popBackStack(R.id.logInFragment, false)
                 navController.navigate(R.id.logInFragment)
             }
             R.id.settings -> {
+                supportActionBar!!.show()
                 navController.popBackStack(R.id.homeFragment, false)
                 navController.navigate(R.id.settingsFragment)
             }
@@ -305,6 +312,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.O
                 Toast.makeText(this.applicationContext, R.string.doupletap, Toast.LENGTH_LONG).show()
                 wantExit = true
             }else{
+                supportActionBar!!.show()
                 super.onBackPressed()
             }
         }

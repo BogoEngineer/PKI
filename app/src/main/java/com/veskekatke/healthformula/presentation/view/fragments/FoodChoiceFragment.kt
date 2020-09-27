@@ -1,35 +1,31 @@
 package com.veskekatke.healthformula.presentation.view.fragments
 
+import android.graphics.LinearGradient
+import android.graphics.Shader
+import android.graphics.drawable.Drawable
+import android.graphics.drawable.PaintDrawable
+import android.graphics.drawable.ShapeDrawable
+import android.graphics.drawable.shapes.RectShape
+import android.os.Build
 import android.os.Bundle
 import android.view.View
+import androidx.annotation.RequiresApi
+import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.viewModels
 import androidx.lifecycle.Observer
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.bottomsheet.BottomSheetDialog
-import com.google.android.material.navigation.NavigationView
-import com.google.gson.Gson
-import com.squareup.picasso.Picasso
 import com.veskekatke.healthformula.R
 import com.veskekatke.healthformula.presentation.contract.MainContract
 import com.veskekatke.healthformula.presentation.view.recycler.adapter.FoodItemAdapter
-import com.veskekatke.healthformula.presentation.view.recycler.adapter.PostAdapter
 import com.veskekatke.healthformula.presentation.view.recycler.diff.FoodItemDiffItemCallback
-import com.veskekatke.healthformula.presentation.view.recycler.diff.PostDiffItemCallback
-import com.veskekatke.healthformula.presentation.viewmodel.FoodItemViewModel
-import com.veskekatke.healthformula.presentation.viewmodel.PostViewModel
 import com.veskekatke.healthformula.presentation.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_foodchoice.*
 import kotlinx.android.synthetic.main.fragment_fooditemdetails.*
-import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 
 class FoodChoiceFragment : Fragment(R.layout.fragment_foodchoice){
     private val userViewModel: MainContract.UserViewModel by sharedViewModel<UserViewModel>()
-
-    private lateinit var bottomSheet : BottomSheetBehavior<View>
 
     private lateinit var foodItemAllowedAdapter: FoodItemAdapter
     private lateinit var foodItemNotAllowedAdapter: FoodItemAdapter
@@ -42,6 +38,58 @@ class FoodChoiceFragment : Fragment(R.layout.fragment_foodchoice){
     private fun init(){
         initUI()
         initObservers()
+    }
+
+//    override fun onBackPressed(){
+//        if(foodItemDetails.isVisible){
+//            foodItemDetails.visibility = View.GONE
+//        }else{
+//            requireActivity().onBackPressed()
+//        }
+//    }
+
+    private fun fadeCard(allowed: Boolean, card: View){
+        if(allowed){
+            val sfN = object: ShapeDrawable.ShaderFactory(){
+                @RequiresApi(Build.VERSION_CODES.M)
+                override fun resize(p0: Int, p1: Int): Shader {
+                    return LinearGradient(0.toFloat(),0.toFloat(),0.toFloat(), card.height.toFloat(),
+                        intArrayOf(
+                            requireActivity().getColor(R.color.greenFade1),
+                            requireActivity().getColor(R.color.greenFade2),
+                            requireActivity().getColor(R.color.greenFade3),
+                            requireActivity().getColor(R.color.greenFade4),
+                            requireActivity().getColor(R.color.greenFade5)),
+                        floatArrayOf(0.20f, 0.40f, 0.50f, 0.75f, 1f),
+                        Shader.TileMode.REPEAT)
+                }
+
+            }
+            val pN = PaintDrawable()
+            pN.shape = RectShape()
+            pN.shaderFactory = sfN
+            card.background = pN as Drawable
+        }else{
+            val sfN = object: ShapeDrawable.ShaderFactory(){
+                @RequiresApi(Build.VERSION_CODES.M)
+                override fun resize(p0: Int, p1: Int): Shader {
+                    return LinearGradient(0.toFloat(),0.toFloat(),0.toFloat(), card.height.toFloat(),
+                        intArrayOf(
+                            requireActivity().getColor(R.color.redFade1),
+                            requireActivity().getColor(R.color.redFade2),
+                            requireActivity().getColor(R.color.redFade3),
+                            requireActivity().getColor(R.color.redFade4),
+                            requireActivity().getColor(R.color.redFade5)),
+                        floatArrayOf(0.1f, 0.30f, 0.50f, 0.75f, 1f),
+                        Shader.TileMode.REPEAT)
+                }
+
+            }
+            val pN = PaintDrawable()
+            pN.shape = RectShape()
+            pN.shaderFactory = sfN
+            card.background = pN as Drawable
+        }
     }
 
     fun closeDetails(){
@@ -62,6 +110,7 @@ class FoodChoiceFragment : Fragment(R.layout.fragment_foodchoice){
                 .updateFoodItem(it)
             foodItemDetails.visibility = View.VISIBLE
             lists.isFocusable = false
+            fadeCard(true, fadingCard)
         }
         allowedRv.adapter = foodItemAllowedAdapter
 
@@ -71,6 +120,7 @@ class FoodChoiceFragment : Fragment(R.layout.fragment_foodchoice){
                 .updateFoodItem(it)
             foodItemDetails.visibility = View.VISIBLE
             lists.isFocusable = false
+            fadeCard(false, fadingCard)
         }
         notAllowedRv.adapter = foodItemNotAllowedAdapter
     }

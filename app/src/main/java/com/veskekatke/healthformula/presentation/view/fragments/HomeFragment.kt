@@ -20,6 +20,7 @@ import com.google.gson.Gson
 import com.veskekatke.healthformula.R
 import com.veskekatke.healthformula.data.models.post.Post
 import com.veskekatke.healthformula.presentation.contract.MainContract
+import com.veskekatke.healthformula.presentation.view.activities.MainActivity
 import com.veskekatke.healthformula.presentation.view.recycler.adapter.PostAdapter
 import com.veskekatke.healthformula.presentation.view.recycler.adapter.SupplementAdapter
 import com.veskekatke.healthformula.presentation.view.recycler.diff.PostDiffItemCallback
@@ -60,6 +61,7 @@ class HomeFragment : Fragment(R.layout.fragment_home){
             val jsonData = Gson().toJson(it)
 
             val action = HomeFragmentDirections.actionHomeFragmentToPostDetailsFragment(jsonData)
+            (requireActivity() as MainActivity).supportActionBar!!.hide()
             navController.navigate(action)
         }
         postRv.adapter = postAdapter

@@ -13,11 +13,11 @@
     <color name="black">#000000</color>
     <color name="green">#3C3F41</color>
     <color name="red">#F40A5A</color>
-    <color name="darkdarkblue">#3D768C</color>
-    <color name="darkblue">#4A8FAA</color>
-    <color name="blue">#4F8BA1</color>
-    <color name="lightblue">#5692A8</color>
-    <color name="lightlightblue">#70ADC3</color>
+    <color name="darkdarkblue">#1976D2</color>
+    <color name="darkblue">#2A7ED1</color>
+    <color name="blue">#4084C8</color>
+    <color name="lightblue">#538DC6</color>
+    <color name="lightlightblue">#75A0CA</color>
     <color name="navViewFade3Dark">#4C8DC8</color>
     <color name="navViewFade2Dark">#306CA1</color>
     <color name="navViewFade1Dark">#1A4368</color>
@@ -26,4 +26,14 @@
     <color name="navViewFade3Light">#8AC2F4</color>
     <color name="navViewFade4Light">#9FCBF3</color>
     <color name="navViewFade5Light">#B9DAF8</color>
+    <color name="redFade5">#83032F</color>
+    <color name="redFade4">#8A2E4F</color>
+    <color name="redFade3">#973B5A</color>
+    <color name="redFade2">#A6506E</color>
+    <color name="redFade1">#AF667F</color>
+    <color name="greenFade5">#85ED56</color>
+    <color name="greenFade4">#97F170</color>
+    <color name="greenFade3">#ABF48C</color>
+    <color name="greenFade2">#C1F8A9</color>
+    <color name="greenFade1">#C8F3B6</color>
 </resources>
