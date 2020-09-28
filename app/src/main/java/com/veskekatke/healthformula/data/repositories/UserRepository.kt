@@ -10,4 +10,5 @@ import io.reactivex.Single
 interface UserRepository {
     fun fetch(): Single<ServerUserResponse<UserResponse>>
     fun get(): UserResponse
+    //fun getFoodItemsByName(name: String)
 }

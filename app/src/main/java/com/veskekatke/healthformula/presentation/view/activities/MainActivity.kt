@@ -2,6 +2,9 @@ package com.veskekatke.healthformula.presentation.view.activities
 
 import android.Manifest
 import android.app.Activity
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -22,6 +25,8 @@ import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.core.app.NotificationCompat
+import androidx.core.app.NotificationManagerCompat
 import androidx.core.view.GravityCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentManager
@@ -85,8 +90,26 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.O
         init()
     }
 
+    private fun createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val name = getString(R.string.channel_name)
+            val descriptionText = getString(R.string.channel_description)
+            val importance = NotificationManager.IMPORTANCE_DEFAULT
+            val channel = NotificationChannel(getString(R.string.channel_id), name, importance).apply {
+                description = descriptionText
+            }
+            // Register the channel with the system
+            val notificationManager: NotificationManager =
+                getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            notificationManager.createNotificationChannel(channel)
+        }
+    }
+
     @RequiresApi(Build.VERSION_CODES.M)
     private fun init(){
+        createNotificationChannel()
         initUI()
         initNavBar()
         setListeners()
@@ -213,6 +236,25 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.O
         //navView.background = if(theme == "dark") getDrawable(R.color.app_background_dark) else getDrawable(R.color.app_background_light)
         setFadingNavbar(theme=="dark")
         setFadingBackground(theme=="dark")
+
+
+        // Init notification UI
+        var builder = NotificationCompat.Builder(this, getString(R.string.channel_id))
+            .setSmallIcon(R.drawable.ic_pill)
+            .setContentTitle(getString(R.string.reminder))
+            .setContentText(getString(R.string.notification_text))
+            .setStyle(NotificationCompat.BigTextStyle()
+                .bigText(getString(R.string.notification_text)))
+            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+            .setContentIntent(PendingIntent.getActivity(this, 0, Intent(this, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+            }, 0))
+
+        //show notification
+        with(NotificationManagerCompat.from(this)) {
+            // notificationId is a unique int for each notification that you must define
+            notify(1, builder.build())
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.M)
@@ -232,7 +274,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.O
             }
         })
         userViewModel.fetch()
-        //userViewModel.get()
 
 
         sharedPref.registerOnSharedPreferenceChangeListener(onSharedPreferenceChangedListener)

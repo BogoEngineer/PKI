@@ -4,7 +4,9 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.veskekatke.healthformula.data.datasources.ServerUserResponse
 import com.veskekatke.healthformula.data.datasources.remote.user.UserService
+import com.veskekatke.healthformula.data.models.supplement.Supplement
 import com.veskekatke.healthformula.data.models.user.UserResponse
+import io.reactivex.Observable
 import io.reactivex.Single
 import org.koin.core.KoinComponent
 import org.koin.core.inject
@@ -38,4 +40,21 @@ class UserRepositoryImpl(
     override fun get(): UserResponse {
         return gson.fromJson<UserResponse>(sharedPref.getString(key, ""), UserResponse::class.java)
     }
+
+    /*override fun getFoodItemsByName(name: String) {
+        var filteredUser = get()
+
+        filteredUser.phase.food_choice.allowed = filteredUser.phase.food_choice.allowed.filter{
+            name in it.name
+        }
+
+        filteredUser.phase.food_choice.not_allowed = filteredUser.phase.food_choice.not_allowed.filter{
+            name in it.name
+        }
+
+        with (sharedPref.edit()) {
+            putString(key, gson.toJson(filteredUser))
+            commit()
+        }
+    }*/
 }

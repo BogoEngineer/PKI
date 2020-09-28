@@ -9,6 +9,6 @@ data class PhaseResponse(
     val exception: String,
     val phase_number: Int,
     val meal_plan: MealPlanResponse,
-    val food_choice: FoodChoiceResponse,
+    var food_choice: FoodChoiceResponse,
     val supplement_plan: SupplementPlanResponse
 )

@@ -30,4 +30,10 @@ Section 1.10.33 of "de Finibus Bonorum et Malorum", written by Cicero in 45 BC
     <string name="dark">Dark theme</string>
     <string name="user_info_key">userInfo</string>
     <string name="enter_credentials">Please enter your credentials</string>
+    <string name="foodItemHint">Search for food item...</string>
+    <string name="channel_name">channel name</string>
+    <string name="channel_description">channel description</string>
+    <string name="channel_id">channel id</string>
+    <string name="notification_text">Don\'t forget your vitamins. Stay hidrated and have a great day!</string>
+    <string name="reminder">Reminder</string>
 </resources>

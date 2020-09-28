@@ -27,6 +27,7 @@ import com.veskekatke.healthformula.presentation.view.recycler.diff.PostDiffItem
 import com.veskekatke.healthformula.presentation.view.states.PostsState
 import com.veskekatke.healthformula.presentation.viewmodel.PostViewModel
 import com.veskekatke.healthformula.presentation.viewmodel.SupplementViewModel
+import com.veskekatke.healthformula.presentation.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
@@ -35,6 +36,8 @@ import timber.log.Timber
 class HomeFragment : Fragment(R.layout.fragment_home){
 
     private val postViewModel: MainContract.PostViewModel by sharedViewModel<PostViewModel> ()
+
+    private val userViewModel : MainContract.UserViewModel by sharedViewModel<UserViewModel>()
 
     private lateinit var postAdapter : PostAdapter
 
@@ -68,6 +71,7 @@ class HomeFragment : Fragment(R.layout.fragment_home){
     }
 
     private fun initObservers(){
+        userViewModel.get()
         postViewModel.postsState.observe(viewLifecycleOwner, Observer {
             renderState(it)
         })

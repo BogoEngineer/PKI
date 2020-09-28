@@ -64,7 +64,7 @@
                 android:layout_height="wrap_content"
                 android:text="@string/close"
                 android:textColor="@color/black"
-                style="?attr/"
+                style="?attr/materialButtonOutlinedStyle"
                 />
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>

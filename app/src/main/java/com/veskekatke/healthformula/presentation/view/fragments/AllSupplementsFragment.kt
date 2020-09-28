@@ -95,10 +95,13 @@ class AllSupplementsFragment : Fragment(R.layout.fragment_allsupplements){
             is SupplementsState.Success -> {
                 showLoadingState(false)
                 supplementAdapter.submitList(state.supplements)
-                currentSupplement = state.supplements[0]
-                requireActivity().supportFragmentManager.beginTransaction()
-                    .add(R.id.supplementDetailsFr, SupplementDetailsFragment(currentSupplement))
-                    .commit()
+                if(state.supplements.isNotEmpty())
+                {
+                    currentSupplement = state.supplements[0]
+                    requireActivity().supportFragmentManager.beginTransaction()
+                        .add(R.id.supplementDetailsFr, SupplementDetailsFragment(currentSupplement))
+                        .commit()
+                }
             }
             is SupplementsState.Error -> {
                 showLoadingState(false)

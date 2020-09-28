@@ -11,7 +11,9 @@ import com.veskekatke.healthformula.presentation.view.states.SupplementsState
 import io.reactivex.android.schedulers.AndroidSchedulers
 import io.reactivex.disposables.CompositeDisposable
 import io.reactivex.schedulers.Schedulers
+import io.reactivex.subjects.PublishSubject
 import timber.log.Timber
+import java.util.concurrent.TimeUnit
 
 class UserViewModel(
     private val userRepository: UserRepository
@@ -35,5 +37,13 @@ class UserViewModel(
 
     override fun get() {
         user.value = userRepository.get()
+    }
+
+    override fun getFoodItemsByName(filter : String){
+        var usr = user.value
+        usr!!.phase.food_choice.allowed = usr!!.phase.food_choice.allowed.filter { it.name.toLowerCase().contains(filter) }
+        usr!!.phase.food_choice.not_allowed = usr!!.phase.food_choice.not_allowed.filter { it.name.toLowerCase().contains(filter) }
+
+        user.value = usr
     }
 }

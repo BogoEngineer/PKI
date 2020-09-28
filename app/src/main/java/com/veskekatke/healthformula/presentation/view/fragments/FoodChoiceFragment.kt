@@ -8,21 +8,28 @@ import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RectShape
 import android.os.Build
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.View
 import androidx.annotation.RequiresApi
 import androidx.core.view.isVisible
+import androidx.core.widget.doAfterTextChanged
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.veskekatke.healthformula.R
+import com.veskekatke.healthformula.data.models.user.UserResponse
 import com.veskekatke.healthformula.presentation.contract.MainContract
 import com.veskekatke.healthformula.presentation.view.recycler.adapter.FoodItemAdapter
 import com.veskekatke.healthformula.presentation.view.recycler.diff.FoodItemDiffItemCallback
 import com.veskekatke.healthformula.presentation.viewmodel.UserViewModel
+import kotlinx.android.synthetic.main.fragment_allsupplements.*
 import kotlinx.android.synthetic.main.fragment_foodchoice.*
 import kotlinx.android.synthetic.main.fragment_fooditemdetails.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import timber.log.Timber
+import java.util.*
 
 class FoodChoiceFragment : Fragment(R.layout.fragment_foodchoice){
     private val userViewModel: MainContract.UserViewModel by sharedViewModel<UserViewModel>()
@@ -127,9 +134,20 @@ class FoodChoiceFragment : Fragment(R.layout.fragment_foodchoice){
 
     private fun initObservers(){
         userViewModel.user.observe(viewLifecycleOwner, Observer {
+            Timber.e("OVDE")
             foodItemAllowedAdapter.submitList(it.phase.food_choice.allowed)
             foodItemNotAllowedAdapter.submitList(it.phase.food_choice.not_allowed)
         })
         userViewModel.get()
+
+        searchFoodItemEt.doAfterTextChanged{
+            val filter = it.toString().toLowerCase()
+            if(filter == ""){
+                userViewModel.get()
+            }
+            else{
+                userViewModel.getFoodItemsByName(filter)
+            }
+        }
     }
 }

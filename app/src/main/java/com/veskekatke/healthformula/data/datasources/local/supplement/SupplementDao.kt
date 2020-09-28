@@ -22,6 +22,6 @@ abstract class SupplementDao {
         insertAll(entities).blockingAwait()
     }
 
-    @Query("SELECT * FROM supplements WHERE name LIKE '%' || :name || '%'")
+    @Query("SELECT * FROM supplements WHERE name LIKE :name || '%'")
     abstract fun getByName(name: String): Observable<List<SupplementEntity>>
 }

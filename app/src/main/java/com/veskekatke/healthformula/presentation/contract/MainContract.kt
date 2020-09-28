@@ -23,5 +23,6 @@ interface MainContract {
         val user: LiveData<UserResponse>
         fun fetch()
         fun get()
+        fun getFoodItemsByName(filter : String)
     }
 }

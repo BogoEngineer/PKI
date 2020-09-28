@@ -11,6 +11,19 @@
             android:layout_width="match_parent"
             />
 
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/searchFoodItemEt"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginTop="10dp"
+        android:hint="@string/foodItemHint"
+        android:textAlignment="viewStart"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:textColorHint="@color/navViewFade4Light"
+        android:textColor="@color/navViewFade4Light"
+        />
 
         <TextView
             android:id="@+id/foodChoiceNameTv"
