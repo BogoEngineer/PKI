@@ -1,10 +1,7 @@
 package com.veskekatke.healthformula.presentation.view.activities
 
 import android.Manifest
-import android.app.Activity
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.PendingIntent
+import android.app.*
 import android.content.Context
 import android.content.Intent
 import android.content.SharedPreferences
@@ -16,21 +13,16 @@ import android.graphics.drawable.PaintDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RectShape
 import android.os.Build
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
-import android.view.ViewGroup
-import android.widget.TextView
 import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.view.GravityCompat
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentManager
-import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
@@ -38,21 +30,15 @@ import com.google.android.material.navigation.NavigationView
 import com.squareup.picasso.Picasso
 import com.veskekatke.healthformula.R
 import com.veskekatke.healthformula.presentation.contract.MainContract
+import com.veskekatke.healthformula.presentation.view.alarm.NotificationReceiver
 import com.veskekatke.healthformula.presentation.view.fragments.HomeFragment
-import com.veskekatke.healthformula.presentation.view.fragments.SettingsFragment
-import com.veskekatke.healthformula.presentation.viewmodel.SupplementViewModel
 import com.veskekatke.healthformula.presentation.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_main.*
-import kotlinx.android.synthetic.main.fragment_mysupplementlist.*
 import kotlinx.android.synthetic.main.nav_header.*
-import okhttp3.internal.checkOffsetAndCount
-import org.koin.androidx.viewmodel.compat.SharedViewModelCompat.sharedViewModel
-import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.androidx.viewmodel.ext.android.viewModel
 import org.koin.core.KoinComponent
 import org.koin.core.inject
-import org.w3c.dom.Text
-import timber.log.Timber
+import java.util.*
 import kotlin.system.exitProcess
 
 class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.OnNavigationItemSelectedListener, View.OnClickListener, KoinComponent {
@@ -66,8 +52,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.O
     private val onSharedPreferenceChangedListener =
         SharedPreferences.OnSharedPreferenceChangeListener { p0, p1 ->
             val theme = sharedPref.getString("theme", "")
-            //fragmentField.background= if(theme == "dark") getDrawable(R.color.app_background_dark) else getDrawable(R.color.app_background_light)
-            //navView.background = if(theme == "dark") getDrawable(R.color.app_background_dark) else getDrawable(R.color.app_background_light)
             setFadingBackground(theme=="dark")
             setFadingNavbar(theme=="dark")
             recreate()
@@ -90,6 +74,21 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.O
         init()
     }
 
+    private fun myAlarm(){
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.HOUR_OF_DAY, 18)
+        calendar.set(Calendar.MINUTE, 22)
+
+        if(calendar.time < Date()) calendar.add(Calendar.DAY_OF_MONTH, 1)
+
+        val intent = Intent(this, NotificationReceiver::class.java)
+        val pendingIntent = PendingIntent.getBroadcast(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+        val alarmManager = (getSystemService(Context.ALARM_SERVICE) as AlarmManager)
+
+        if(alarmManager != null) alarmManager.setRepeating(AlarmManager.RTC_WAKEUP, calendar.timeInMillis,
+            AlarmManager.INTERVAL_DAY, pendingIntent)
+    }
+
     private fun createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
@@ -109,7 +108,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.O
 
     @RequiresApi(Build.VERSION_CODES.M)
     private fun init(){
-        createNotificationChannel()
+        //createNotificationChannel()
         initUI()
         initNavBar()
         setListeners()
@@ -239,7 +238,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.O
 
 
         // Init notification UI
-        var builder = NotificationCompat.Builder(this, getString(R.string.channel_id))
+        /*var builder = NotificationCompat.Builder(this, getString(R.string.channel_id))
             .setSmallIcon(R.drawable.ic_pill)
             .setContentTitle(getString(R.string.reminder))
             .setContentText(getString(R.string.notification_text))
@@ -254,7 +253,9 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.O
         with(NotificationManagerCompat.from(this)) {
             // notificationId is a unique int for each notification that you must define
             notify(1, builder.build())
-        }
+        }*/
+        if(sharedPref.getBoolean("notifications", true)) myAlarm()
+
     }
 
     @RequiresApi(Build.VERSION_CODES.M)

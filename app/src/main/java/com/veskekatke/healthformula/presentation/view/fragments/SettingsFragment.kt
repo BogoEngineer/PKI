@@ -19,7 +19,7 @@ import timber.log.Timber
 
 class SettingsFragment : Fragment(R.layout.fragment_settings), KoinComponent{
 
-    private val themeSp : SharedPreferences by inject()
+    private val sharedPref : SharedPreferences by inject()
 
     private val userViewModel : MainContract.UserViewModel by sharedViewModel<UserViewModel>()
 
@@ -35,17 +35,25 @@ class SettingsFragment : Fragment(R.layout.fragment_settings), KoinComponent{
     }
 
     private fun initStates(){
-        darkThemeSm.isChecked = themeSp.getString("theme", "")=="dark"
+        darkThemeSm.isChecked = sharedPref.getString("theme", "")=="dark"
     }
 
     private fun initObservers(){
         userViewModel.get()
         darkThemeSm.setOnCheckedChangeListener { _, b ->
-            with (themeSp.edit()) {
+            with (sharedPref.edit()) {
                 putString("theme", if(b) "dark" else "light")
                 commit()
             }
             darkThemeSm.isChecked = b
+        }
+
+        notifySm.setOnCheckedChangeListener { _, b ->
+            with (sharedPref.edit()) {
+                putBoolean("notifications", b)
+                commit()
+            }
+            notifySm.isChecked = b
         }
     }
 }
