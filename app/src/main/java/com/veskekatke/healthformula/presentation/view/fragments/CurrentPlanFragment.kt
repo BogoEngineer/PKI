@@ -42,8 +42,8 @@ class CurrentPlanFragment : Fragment(R.layout.fragment_currentplan){
 
     private fun initObservers(){
         userViewModel.user.observe(viewLifecycleOwner, Observer {
-            titleTv.text = it.phase.meal_plan.name
-            contentMpTv.text = it.phase.meal_plan.description
+            titleTv.text = it.phase?.meal_plan?.name
+            contentMpTv.text = it.phase?.meal_plan?.description
         })
         userViewModel.get()
     }

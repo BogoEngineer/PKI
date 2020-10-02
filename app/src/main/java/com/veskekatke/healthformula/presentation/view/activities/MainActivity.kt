@@ -51,10 +51,12 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.O
     @RequiresApi(Build.VERSION_CODES.M)
     private val onSharedPreferenceChangedListener =
         SharedPreferences.OnSharedPreferenceChangeListener { p0, p1 ->
-            val theme = sharedPref.getString("theme", "")
-            setFadingBackground(theme=="dark")
-            setFadingNavbar(theme=="dark")
-            recreate()
+            if(p1=="theme"){
+                val theme = sharedPref.getString("theme", "")
+                setFadingBackground(theme=="dark")
+                setFadingNavbar(theme=="dark")
+                recreate()
+            }
         }
 
 

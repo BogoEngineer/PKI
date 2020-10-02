@@ -34,6 +34,7 @@ class FoodItemDetailsFragment(foodItem : FoodItemResponse? = null) :  Fragment(R
         Picasso
             .get()
             .load(foodItem!!.image)
+            .error(R.drawable.no_image_found)
             .into(foodItemIv)
 
         contentFoodItemTv.text = foodItem!!.description

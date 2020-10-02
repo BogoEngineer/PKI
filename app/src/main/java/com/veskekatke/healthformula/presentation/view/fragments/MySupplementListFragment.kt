@@ -9,7 +9,9 @@ import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RectShape
 import android.os.Build
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -36,6 +38,7 @@ class MySupplementListFragment(private val list : List<Supplement> = listOf(), p
     }
 
     private fun init(){
+        //Timber.e(title)
         initUI()
         initObservers()
         initListeners()
@@ -52,7 +55,7 @@ class MySupplementListFragment(private val list : List<Supplement> = listOf(), p
                         context!!.getColor(R.color.blue),
                         context!!.getColor(R.color.lightblue),
                         context!!.getColor(R.color.lightlightblue)),
-                floatArrayOf(0.toFloat(), 0.25f, 0.50f, 0.75f, 1.toFloat()),
+                floatArrayOf(0.1f, 0.25f, 0.65f, 0.80f, 1f),
                 Shader.TileMode.REPEAT)
             }
 
@@ -64,6 +67,8 @@ class MySupplementListFragment(private val list : List<Supplement> = listOf(), p
         supplementListTitleTv.text = "+ $title"
         mySupplementListRv.visibility = View.GONE
         initRecycler()
+
+        supplementCb.isChecked = sharedPref.getBoolean(title, false)
     }
 
     private fun initListeners(){
@@ -74,21 +79,18 @@ class MySupplementListFragment(private val list : List<Supplement> = listOf(), p
                 mySupplementListRv.visibility = View.VISIBLE
             }else mySupplementListRv.visibility = View.GONE
         }
+        supplementCb.setOnCheckedChangeListener { _, b ->
+            supplementCb.isChecked = b
+            with((sharedPref.edit())){
+                putBoolean(title, b)
+                apply()
+            }
+        }
     }
 
     private fun initRecycler(){
         mySupplementListRv.layoutManager = LinearLayoutManager(this.context, LinearLayoutManager.HORIZONTAL, false)
-        val sp_list = sharedPref.getString(title, "")
-        val checked_list = if(sp_list!="") Gson().fromJson(sp_list, MutableList::class.java) else mutableListOf(String)
-        supplementAdapter = SupplementAdapter(true, SupplementDiffItemCallback(), checked_list as MutableList<String>){
-            //Timber.e(it.toString())
-            if(!checked_list.contains(it.name)) checked_list.add(it.name)
-            else checked_list.remove(it.name)
-            with(sharedPref.edit()){
-                putString(title, Gson().toJson(list))
-                commit()
-            }
-            Timber.e(checked_list.toString())
+        supplementAdapter = SupplementAdapter(true, SupplementDiffItemCallback()){
         }
         mySupplementListRv.adapter = supplementAdapter
 
@@ -97,4 +99,5 @@ class MySupplementListFragment(private val list : List<Supplement> = listOf(), p
     private fun initObservers(){
         supplementAdapter.submitList(list)
     }
+
 }

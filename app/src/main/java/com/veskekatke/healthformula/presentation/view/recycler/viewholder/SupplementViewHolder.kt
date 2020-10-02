@@ -18,16 +18,9 @@ class SupplementViewHolder(
     override val containerView: View,
     onItemClicked: (Int) -> Unit) : RecyclerView.ViewHolder(containerView), LayoutContainer, KoinComponent {
 
-    init {
-        if(profile) containerView.supplementCb.setOnCheckedChangeListener { _, b ->
-            onItemClicked.invoke(adapterPosition)
-        }
-    }
-
-    fun bind(supplement : Supplement, checked : Boolean=false){
+    fun bind(supplement : Supplement){
         containerView.findViewById<TextView>(R.id.supplementTitleTv).text = supplement.name
         if(!profile) containerView.findViewById<TextView>(R.id.supplementManufacturerTv).text = supplement.manufacturer
-        if(profile) containerView.findViewById<CheckBox>(R.id.supplementCb).isChecked = checked
         /*containerView.findViewById<TextView>(R.id.supplementContentTv).text =
             if(supplement.description.length > 30) supplement.description.substring(0, 30)+"..." else supplement.description*/
     }

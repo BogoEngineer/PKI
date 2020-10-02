@@ -4,7 +4,11 @@ import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.veskekatke.healthformula.data.datasources.ServerUserResponse
 import com.veskekatke.healthformula.data.datasources.remote.user.UserService
+import com.veskekatke.healthformula.data.models.foodChoice.FoodChoiceResponse
+import com.veskekatke.healthformula.data.models.mealPlan.MealPlanResponse
+import com.veskekatke.healthformula.data.models.phase.PhaseResponse
 import com.veskekatke.healthformula.data.models.supplement.Supplement
+import com.veskekatke.healthformula.data.models.supplementPlan.SupplementPlanResponse
 import com.veskekatke.healthformula.data.models.user.UserResponse
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -38,7 +42,46 @@ class UserRepositoryImpl(
     }
 
     override fun get(): UserResponse {
-        return gson.fromJson<UserResponse>(sharedPref.getString(key, ""), UserResponse::class.java)
+        val ret = gson.fromJson<UserResponse>(sharedPref.getString(key, ""), UserResponse::class.java)
+        val u = "unknown"
+        if(ret==null) return UserResponse(
+            u,
+            false,
+            u,
+            u,
+            u,
+            u,
+            u,
+            u,
+            PhaseResponse(
+                u,
+                u,
+                0,
+                MealPlanResponse(
+                    u,
+                    u,
+                    u
+                ),
+                FoodChoiceResponse(
+                    u,
+                    u,
+                    listOf(),
+                    listOf()
+                ),
+                SupplementPlanResponse(
+                    listOf(),
+                    listOf(),
+                    listOf(),
+                    listOf(),
+                    listOf(),
+                    listOf(),
+                    listOf(),
+                    listOf()
+                )
+            ),
+            u
+        )
+        else return ret
     }
 
     /*override fun getFoodItemsByName(name: String) {

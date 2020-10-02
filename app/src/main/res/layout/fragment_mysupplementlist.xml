@@ -26,16 +26,34 @@
                 android:padding="16dp">
 
                 <!-- Title, secondary and supporting text -->
-                <TextView
-                    android:id="@+id/supplementListTitleTv"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    android:clickable="true"
-                    android:textColor="@color/white"
-                    android:textSize="20dp"
-                    android:alpha="0.85" />
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:orientation="horizontal">
+                    <TextView
+                        android:id="@+id/supplementListTitleTv"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintLeft_toLeftOf="parent"
+                        app:layout_constraintWidth_default="spread"
+                        app:layout_constraintRight_toLeftOf="@id/supplementCb"
+                        android:clickable="true"
+                        android:textColor="@color/white"
+                        android:textSize="20dp"
+                        android:alpha="0.85" />
+
+                    <CheckBox
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintRight_toRightOf="parent"
+                        android:layout_marginRight="2dp"
+                        android:id="@+id/supplementCb"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:checked="false"
+                        android:buttonTint="@color/white"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/mySupplementListRv"
                     android:layout_width="wrap_content"

@@ -36,4 +36,6 @@
     <color name="greenFade3">#ABF48C</color>
     <color name="greenFade2">#C1F8A9</color>
     <color name="greenFade1">#C8F3B6</color>
+    <color name="darkpurple">#4B40AC</color>
+    <color name="lightpurple">#5D51C6</color>
 </resources>

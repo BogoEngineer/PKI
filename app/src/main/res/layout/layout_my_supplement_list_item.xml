@@ -29,16 +29,6 @@
                     android:layout_height="wrap_content"
                     android:textAppearance="?attr/textAppearanceHeadline6"
                     />
-
-                <CheckBox
-                    app:layout_constraintTop_toTopOf="parent"
-                    app:layout_constraintBottom_toBottomOf="@id/supplementTitleTv"
-                    app:layout_constraintRight_toRightOf="parent"
-                    android:layout_marginRight="2dp"
-                    android:id="@+id/supplementCb"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:checked="false"/>
             </androidx.constraintlayout.widget.ConstraintLayout>
 
     </com.google.android.material.card.MaterialCardView>

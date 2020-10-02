@@ -135,8 +135,8 @@ class FoodChoiceFragment : Fragment(R.layout.fragment_foodchoice){
     private fun initObservers(){
         userViewModel.user.observe(viewLifecycleOwner, Observer {
             Timber.e("OVDE")
-            foodItemAllowedAdapter.submitList(it.phase.food_choice.allowed)
-            foodItemNotAllowedAdapter.submitList(it.phase.food_choice.not_allowed)
+            foodItemAllowedAdapter.submitList(it.phase?.food_choice?.allowed)
+            foodItemNotAllowedAdapter.submitList(it.phase?.food_choice?.not_allowed)
         })
         userViewModel.get()
 

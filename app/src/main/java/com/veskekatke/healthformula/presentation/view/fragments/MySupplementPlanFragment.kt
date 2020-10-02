@@ -27,6 +27,7 @@ class MySupplementPlanFragment : Fragment(R.layout.fragment_mysupplementplan){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         activity?.findViewById<NavigationView>(R.id.navView)?.setCheckedItem(R.id.mySupplementPlan)
+        Timber.e("w t f")
         init()
     }
 
