@@ -7,6 +7,9 @@ import android.view.View
 import android.widget.CompoundButton
 import android.widget.RadioGroup
 import androidx.fragment.app.Fragment
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.navigation.NavigationView
 import com.veskekatke.healthformula.R
 import com.veskekatke.healthformula.presentation.contract.MainContract
@@ -18,6 +21,7 @@ import org.koin.core.inject
 import timber.log.Timber
 
 class SettingsFragment : Fragment(R.layout.fragment_settings), KoinComponent{
+    lateinit var navController : NavController
 
     private val sharedPref : SharedPreferences by inject()
 
@@ -36,6 +40,7 @@ class SettingsFragment : Fragment(R.layout.fragment_settings), KoinComponent{
 
     private fun initStates(){
         darkThemeSm.isChecked = sharedPref.getString("theme", "")=="dark"
+        navController = Navigation.findNavController(requireView())
     }
 
     private fun initObservers(){
@@ -54,6 +59,10 @@ class SettingsFragment : Fragment(R.layout.fragment_settings), KoinComponent{
                 commit()
             }
             notifySm.isChecked = b
+        }
+
+        changePasswordTv.setOnClickListener {
+            navController.navigate(R.id.action_settingsFragment_to_changePasswordFragment)
         }
     }
 }

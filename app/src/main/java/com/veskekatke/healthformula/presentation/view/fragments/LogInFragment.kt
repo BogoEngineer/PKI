@@ -1,11 +1,15 @@
 package com.veskekatke.healthformula.presentation.view.fragments
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.graphics.LinearGradient
 import android.graphics.Shader
 import android.graphics.drawable.Drawable
 import android.graphics.drawable.PaintDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RectShape
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
 import android.os.Build
 import android.os.Bundle
 import android.view.View
@@ -14,20 +18,32 @@ import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.drawerlayout.widget.DrawerLayout
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.veskekatke.healthformula.R
+import com.veskekatke.healthformula.data.models.user.Credentials
 import com.veskekatke.healthformula.presentation.view.activities.MainActivity
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_login.*
 import kotlinx.android.synthetic.main.fragment_login.view.*
 import kotlinx.android.synthetic.main.fragment_login.view.logInButton
+import org.koin.core.KoinComponent
+import org.koin.core.inject
+import timber.log.Timber
 
-class LogInFragment : Fragment(R.layout.fragment_login){
+class LogInFragment : Fragment(R.layout.fragment_login), KoinComponent{
     lateinit var navController : NavController
+
+    private val sharedPref : SharedPreferences by inject()
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         init()
+        if(sharedPref.getString("jwt", "")!= "") {
+            navController.navigate(R.id.action_logInFragment_to_homeFragment)
+            (requireActivity() as MainActivity).supportActionBar!!.show()
+        }
         setListeners()
     }
 
@@ -73,6 +89,16 @@ class LogInFragment : Fragment(R.layout.fragment_login){
         navController = Navigation.findNavController(requireView())
 
         activity?.findViewById<DrawerLayout>(R.id.drawerLayout)?.setDrawerLockMode(DrawerLayout.LOCK_MODE_LOCKED_CLOSED)
+
+        (requireActivity() as MainActivity).userViewModel.loggedIn.observe(viewLifecycleOwner, Observer {
+            if(it.success){
+                navController.navigate(R.id.action_logInFragment_to_homeFragment)
+                (requireActivity() as MainActivity).supportActionBar!!.show()
+            }
+            else{
+                if(it.msg != null && it.msg != "") Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun setListeners(){
@@ -86,11 +112,34 @@ class LogInFragment : Fragment(R.layout.fragment_login){
     }
 
     private fun login(){
-        navController.navigate(R.id.action_logInFragment_to_homeFragment)
-        (requireActivity() as MainActivity).supportActionBar!!.show()
+        if(!checkInternetConnection()){
+            Toast.makeText(requireContext(), "Active internet connection is needed!", Toast.LENGTH_LONG).show()
+            return
+        }
+        (requireActivity() as MainActivity).userViewModel.authenticate(Credentials(usernameInput.text.toString(), passwordInput.text.toString()))
     }
 
     private fun forgotPassword(){
         Toast.makeText(activity?.applicationContext, "Unlucky", Toast.LENGTH_SHORT).show()
+    }
+
+    private fun checkInternetConnection() : Boolean{
+        val connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val nw      = connectivityManager.activeNetwork ?: return false
+            val actNw = connectivityManager.getNetworkCapabilities(nw) ?: return false
+            return when {
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                //for other device how are able to connect with Ethernet
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                //for check internet over Bluetooth
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> true
+                else -> false
+            }
+        } else {
+            val nwInfo = connectivityManager.activeNetworkInfo ?: return false
+            return nwInfo.isConnected
+        }
     }
 }

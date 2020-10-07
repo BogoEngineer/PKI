@@ -36,4 +36,9 @@ Section 1.10.33 of "de Finibus Bonorum et Malorum", written by Cicero in 45 BC
     <string name="channel_id">channel id</string>
     <string name="notification_text">Don\'t forget your vitamins. Stay hidrated and have a great day!</string>
     <string name="reminder">Reminder</string>
+    <string name="old_pass">Current password</string>
+    <string name="new_pass1">New password</string>
+    <string name="new_pass2">Confirm new password</string>
+    <string name="forgotPassword">Forgot password?</string>
+    <string name="change_password">Change password</string>
 </resources>

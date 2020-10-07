@@ -2,6 +2,7 @@ package com.veskekatke.healthformula.data.repositories
 
 import android.content.SharedPreferences
 import com.google.gson.Gson
+import com.veskekatke.healthformula.data.datasources.ServerAuthenticateResponse
 import com.veskekatke.healthformula.data.datasources.ServerUserResponse
 import com.veskekatke.healthformula.data.datasources.remote.user.UserService
 import com.veskekatke.healthformula.data.models.foodChoice.FoodChoiceResponse
@@ -9,6 +10,7 @@ import com.veskekatke.healthformula.data.models.mealPlan.MealPlanResponse
 import com.veskekatke.healthformula.data.models.phase.PhaseResponse
 import com.veskekatke.healthformula.data.models.supplement.Supplement
 import com.veskekatke.healthformula.data.models.supplementPlan.SupplementPlanResponse
+import com.veskekatke.healthformula.data.models.user.Credentials
 import com.veskekatke.healthformula.data.models.user.UserResponse
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -25,11 +27,10 @@ class UserRepositoryImpl(
     //private val sharedPref = sp.getSharedPreferences(activity.getString(R.string.user_info_key), Context.MODE_PRIVATE)
     private val key =  "userInfo"
 
-    override fun fetch(): Single<ServerUserResponse<UserResponse>> {
+    override fun fetch(userId: String): Single<ServerUserResponse<UserResponse>> {
         return remoteDataSource
-            .get()
+            .get(userId, sharedPref.getString("jwt", "")!!)
             .doOnSuccess {
-                //Timber.e("SUCCESS")
                 with (sharedPref.edit()) {
                     putString(key, gson.toJson(it.data))
                     commit()
@@ -39,6 +40,24 @@ class UserRepositoryImpl(
                 Timber.e(it.toString())
             }
 
+    }
+
+    override fun authenticate(credentials: Credentials): Single<ServerAuthenticateResponse> {
+        return remoteDataSource
+            .authenticate(credentials)
+            .doOnSuccess {
+                if(it.success) {
+                    with (sharedPref.edit()) {
+                        putString("jwt", it.token)
+                        putString("userId", it.userId)
+                        commit()
+                    }
+                }
+
+            }
+            .doOnError {
+                Timber.e(it.toString())
+            }
     }
 
     override fun get(): UserResponse {

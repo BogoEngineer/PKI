@@ -1,5 +1,6 @@
 package com.veskekatke.healthformula.presentation.view.fragments
 
+import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
@@ -31,13 +32,17 @@ import com.veskekatke.healthformula.presentation.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import timber.log.Timber
 
-class HomeFragment : Fragment(R.layout.fragment_home){
+class HomeFragment : Fragment(R.layout.fragment_home), KoinComponent{
 
     private val postViewModel: MainContract.PostViewModel by sharedViewModel<PostViewModel> ()
 
     private val userViewModel : MainContract.UserViewModel by sharedViewModel<UserViewModel>()
+
+    private val sharedPref : SharedPreferences by inject()
 
     private lateinit var postAdapter : PostAdapter
 
@@ -71,7 +76,7 @@ class HomeFragment : Fragment(R.layout.fragment_home){
     }
 
     private fun initObservers(){
-        userViewModel.get()
+        (requireActivity() as MainActivity).userViewModel.fetch(sharedPref.getString("userId", "")!!)
         postViewModel.postsState.observe(viewLifecycleOwner, Observer {
             renderState(it)
         })

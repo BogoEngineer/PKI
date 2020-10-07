@@ -89,6 +89,9 @@
         <action
             android:id="@+id/action_settingsFragment_to_allSupplementsFragment"
             app:destination="@id/allSupplementsFragment" />
+        <action
+            android:id="@+id/action_settingsFragment_to_changePasswordFragment"
+            app:destination="@id/changePasswordFragment" />
     </fragment>
     <fragment
         android:id="@+id/allSupplementsFragment"
@@ -162,5 +165,13 @@
             app:destination="@id/homeFragment"
             app:enterAnim="@anim/fragment_open_enter"
             app:exitAnim="@anim/fragment_open_exit" />
+    </fragment>
+    <fragment
+        android:id="@+id/changePasswordFragment"
+        android:name="com.veskekatke.healthformula.presentation.view.fragments.ChangePasswordFragment"
+        android:label="ChangePasswordFragment" >
+        <action
+            android:id="@+id/action_changePasswordFragment_to_settingsFragment"
+            app:destination="@id/settingsFragment" />
     </fragment>
 </navigation>

@@ -12,6 +12,9 @@ import android.graphics.drawable.Drawable
 import android.graphics.drawable.PaintDrawable
 import android.graphics.drawable.ShapeDrawable
 import android.graphics.drawable.shapes.RectShape
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.net.NetworkInfo
 import android.os.Build
 import android.os.Bundle
 import android.view.MenuItem
@@ -20,8 +23,6 @@ import android.widget.Toast
 import androidx.annotation.RequiresApi
 import androidx.appcompat.app.ActionBarDrawerToggle
 import androidx.appcompat.app.AppCompatActivity
-import androidx.core.app.NotificationCompat
-import androidx.core.app.NotificationManagerCompat
 import androidx.core.view.GravityCompat
 import androidx.lifecycle.Observer
 import androidx.navigation.NavController
@@ -60,7 +61,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.O
         }
 
 
-    private val userViewModel : MainContract.UserViewModel by viewModel<UserViewModel>()
+    val userViewModel : MainContract.UserViewModel by viewModel<UserViewModel>()
 
     companion object {
         //image pick code
@@ -276,7 +277,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.O
                     .into(profile_image)
             }
         })
-        userViewModel.fetch()
+        //userViewModel.fetch(sharedPref.getString("userId", "")!!)
 
 
         sharedPref.registerOnSharedPreferenceChangeListener(onSharedPreferenceChangedListener)
@@ -330,6 +331,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.O
             }
             R.id.logout -> {
                 supportActionBar!!.hide()
+                userViewModel.logOut()
+                sharedPref.edit().clear().commit()
                 navController.popBackStack(R.id.logInFragment, false)
                 navController.navigate(R.id.logInFragment)
             }
@@ -423,4 +426,5 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.O
             profile_image.setImageURI(data?.data)
         }
     }
+
 }
