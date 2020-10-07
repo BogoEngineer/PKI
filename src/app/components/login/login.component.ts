@@ -29,6 +29,25 @@ export class LoginComponent implements OnInit {
   }
 
   logIn(){
+    if(this.user.email == "" || this.user.password==""){
+      this.snackBar.open("Please fill both fields!", 'x', {
+        duration: 1500,
+        verticalPosition: "bottom"
+      })
+      return;
+    }
 
+    this.adminService.login(this.user).subscribe(res=>{
+      if(res.success == true){
+        localStorage.setItem("jwt", res.token)
+        this.router.navigate(['admin'])
+      }
+      else{
+        this.snackBar.open(res.msg, 'x', {
+          duration: 1500,
+          verticalPosition: "bottom"
+        })
+      }
+    })
   }
 }

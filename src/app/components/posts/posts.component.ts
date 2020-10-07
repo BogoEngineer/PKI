@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
+import { AdminService } from 'src/app/services/admin.service';
 
 @Component({
   selector: 'app-posts',
@@ -8,11 +9,18 @@ import { Router } from '@angular/router';
 })
 export class PostsComponent implements OnInit {
 
-  images = [944, 1011, 984].map((n) => `https://picsum.photos/id/${n}/900/500`);
+  posts : any[];
 
-  constructor(private router: Router) { }
+
+  constructor(
+    private router: Router,
+    private adminService: AdminService
+    ) { }
 
   ngOnInit(): void {
+    this.adminService.getPosts().subscribe(res=>{
+      this.posts = res.data;
+    })
   }
 
   addNew(str:any){

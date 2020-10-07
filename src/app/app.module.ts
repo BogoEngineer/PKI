@@ -47,18 +47,19 @@ import { ChooseFooditemsComponent } from './components/choose-fooditems/choose-f
 import { MealplansComponent } from './components/mealplans/mealplans.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { AppointmentComponent } from './components/appointment/appointment.component';
+import { Guard } from './guards/Guard';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
-  { path: 'admin', component: HomeComponent },
-  { path: 'admin/users', component: UsersComponent },
-  { path: 'admin/supplements', component: SupplementsComponent },
-  { path: 'admin/fooditems', component: FooditemsComponent },
-  { path: 'admin/foodchoices', component: FoodchoicesComponent },
-  { path: 'admin/posts', component: PostsComponent },
-  { path: 'admin/addnew', component: AddnewComponent },
-  { path: 'admin/changepassword', component: ChangePasswordComponent },
-  { path: 'admin/users/appointment', component: AppointmentComponent }
+  { path: 'admin', component: HomeComponent, canActivate: [Guard] },
+  { path: 'admin/users', component: UsersComponent, canActivate: [Guard] },
+  { path: 'admin/supplements', component: SupplementsComponent, canActivate: [Guard] },
+  { path: 'admin/fooditems', component: FooditemsComponent, canActivate: [Guard] },
+  { path: 'admin/foodchoices', component: FoodchoicesComponent, canActivate: [Guard] },
+  { path: 'admin/posts', component: PostsComponent, canActivate: [Guard] },
+  { path: 'admin/addnew', component: AddnewComponent, canActivate: [Guard] },
+  { path: 'admin/changepassword', component: ChangePasswordComponent, canActivate: [Guard] },
+  { path: 'admin/users/appointment', component: AppointmentComponent, canActivate: [Guard] }
 ];
 
 @NgModule({
@@ -107,7 +108,10 @@ const routes: Routes = [
     MatAutocompleteModule,
     NgbModule 
   ],
-  providers: [AdminService],
+  providers: [
+    AdminService,
+    Guard
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

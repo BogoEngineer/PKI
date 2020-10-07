@@ -12,7 +12,7 @@ export class AppointmentComponent implements OnInit {
 
   patient: any;
 
-  profile_picture = "../../../assets/anonuser.png" || this.patient.profile_picture
+  profile_picture : string;
 
   constructor(
     private adminService:AdminService,
@@ -58,6 +58,7 @@ export class AppointmentComponent implements OnInit {
   ngOnInit(): void {
     this.patient = history.state.user || JSON.parse(localStorage.getItem('patient'));
     localStorage.setItem('patient', JSON.stringify(this.patient))
+    this.profile_picture = (this.patient.profile_picture=="" || this.patient.profile_picture==null) ? "../../../assets/anonuser.png" : this.patient.profile_picture;
     this.secondFormGroup = this._formBuilder.group({
       firstCtrl: ['', Validators.required],
       secondCtrl: ['', Validators.required],
