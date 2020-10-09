@@ -1,11 +1,14 @@
 package com.veskekatke.healthformula.data.repositories
 
+import android.content.SharedPreferences
 import com.veskekatke.healthformula.data.datasources.local.post.PostDao
 import com.veskekatke.healthformula.data.datasources.remote.post.PostService
 import com.veskekatke.healthformula.data.models.post.Post
 import com.veskekatke.healthformula.data.models.post.PostEntity
 import com.veskekatke.healthformula.data.models.resource.Resource
 import io.reactivex.Observable
+import org.koin.core.KoinComponent
+import org.koin.core.inject
 import timber.log.Timber
 
 class PostRepositoryImpl(

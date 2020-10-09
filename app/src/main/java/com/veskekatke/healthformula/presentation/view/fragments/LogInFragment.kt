@@ -120,7 +120,16 @@ class LogInFragment : Fragment(R.layout.fragment_login), KoinComponent{
     }
 
     private fun forgotPassword(){
-        Toast.makeText(activity?.applicationContext, "Unlucky", Toast.LENGTH_SHORT).show()
+        if(!checkInternetConnection()) {
+            Toast.makeText(requireContext(), "Active internet connection is needed!", Toast.LENGTH_LONG).show()
+            return
+        }
+        if(usernameInput.text.toString() == ""){
+            Toast.makeText(activity?.applicationContext, "Fill in your email first", Toast.LENGTH_SHORT).show()
+            return
+        }
+        (requireActivity() as MainActivity).userViewModel.resetPassword(usernameInput.text.toString())
+        Toast.makeText(activity?.applicationContext, "Check your email for new password", Toast.LENGTH_SHORT).show()
     }
 
     private fun checkInternetConnection() : Boolean{

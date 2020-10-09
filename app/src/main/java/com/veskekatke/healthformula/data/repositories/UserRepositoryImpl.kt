@@ -3,6 +3,7 @@ package com.veskekatke.healthformula.data.repositories
 import android.content.SharedPreferences
 import com.google.gson.Gson
 import com.veskekatke.healthformula.data.datasources.ServerAuthenticateResponse
+import com.veskekatke.healthformula.data.datasources.ServerChangePasswordResponse
 import com.veskekatke.healthformula.data.datasources.ServerUserResponse
 import com.veskekatke.healthformula.data.datasources.remote.user.UserService
 import com.veskekatke.healthformula.data.models.foodChoice.FoodChoiceResponse
@@ -11,6 +12,7 @@ import com.veskekatke.healthformula.data.models.phase.PhaseResponse
 import com.veskekatke.healthformula.data.models.supplement.Supplement
 import com.veskekatke.healthformula.data.models.supplementPlan.SupplementPlanResponse
 import com.veskekatke.healthformula.data.models.user.Credentials
+import com.veskekatke.healthformula.data.models.user.PasswordInformation
 import com.veskekatke.healthformula.data.models.user.UserResponse
 import io.reactivex.Observable
 import io.reactivex.Single
@@ -101,6 +103,20 @@ class UserRepositoryImpl(
             u
         )
         else return ret
+    }
+
+    override fun changePassword(passInfo : PasswordInformation): Single<ServerChangePasswordResponse> {
+        return remoteDataSource
+            .changePassword(passInfo, sharedPref.getString("jwt", "")!!)
+            .doOnSuccess {  }
+    }
+
+    override fun resetPassword(email: String): Single<ServerUserResponse<UserResponse>> {
+        return remoteDataSource
+            .resetPassword(email)
+            .doOnSuccess {
+
+            }
     }
 
     /*override fun getFoodItemsByName(name: String) {

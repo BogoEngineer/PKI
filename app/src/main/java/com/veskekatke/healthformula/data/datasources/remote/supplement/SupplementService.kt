@@ -5,6 +5,8 @@ import com.veskekatke.healthformula.data.models.post.PostResponse
 import com.veskekatke.healthformula.data.models.supplement.SupplementResponse
 import io.reactivex.Observable
 import retrofit2.http.GET
+import retrofit2.http.Header
+
 interface SupplementService {
 
     @GET("user/supplements")

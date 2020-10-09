@@ -7,8 +7,10 @@ import androidx.lifecycle.ViewModel
 import androidx.navigation.NavController
 import com.veskekatke.healthformula.R
 import com.veskekatke.healthformula.data.datasources.ServerAuthenticateResponse
+import com.veskekatke.healthformula.data.datasources.ServerChangePasswordResponse
 import com.veskekatke.healthformula.data.models.resource.Resource
 import com.veskekatke.healthformula.data.models.user.Credentials
+import com.veskekatke.healthformula.data.models.user.PasswordInformation
 import com.veskekatke.healthformula.data.models.user.UserResponse
 import com.veskekatke.healthformula.data.repositories.UserRepository
 import com.veskekatke.healthformula.presentation.contract.MainContract
@@ -28,6 +30,8 @@ class UserViewModel(
     override val user: MutableLiveData<UserResponse> = MutableLiveData<UserResponse>()
 
     override val loggedIn: MutableLiveData<ServerAuthenticateResponse> = MutableLiveData<ServerAuthenticateResponse>()
+
+    override val changedPassword: MutableLiveData<ServerChangePasswordResponse> = MutableLiveData<ServerChangePasswordResponse>()
 
     override fun fetch(userId: String) {
         val subscription = userRepository
@@ -71,5 +75,34 @@ class UserViewModel(
 
     override fun logOut(){
         loggedIn.value = ServerAuthenticateResponse(false, null, null, null)
+    }
+
+    override fun changePassword(passInfo: PasswordInformation) {
+        val subscription = userRepository
+            .changePassword(passInfo)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+                changedPassword.value = it
+            }, {
+                Timber.e(it.toString())
+            })
+        subscriptions.add(subscription)
+    }
+
+    override fun enableChangePassword() {
+        changedPassword.value = null
+    }
+
+    override fun resetPassword(email: String) {
+        val subscription = userRepository
+            .resetPassword(email)
+            .subscribeOn(Schedulers.io())
+            .observeOn(AndroidSchedulers.mainThread())
+            .subscribe({
+            }, {
+                Timber.e(it.toString())
+            })
+        subscriptions.add(subscription)
     }
 }

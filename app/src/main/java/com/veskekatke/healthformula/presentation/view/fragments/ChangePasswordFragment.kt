@@ -1,13 +1,22 @@
 package com.veskekatke.healthformula.presentation.view.fragments
 
+import android.content.Context
 import android.content.SharedPreferences
+import android.net.ConnectivityManager
+import android.net.NetworkCapabilities
+import android.os.Build
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
 import com.google.android.material.navigation.NavigationView
 import com.veskekatke.healthformula.R
+import com.veskekatke.healthformula.data.models.user.PasswordInformation
 import com.veskekatke.healthformula.presentation.contract.MainContract
+import com.veskekatke.healthformula.presentation.view.activities.MainActivity
 import com.veskekatke.healthformula.presentation.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.fragment_changepassword.*
 import kotlinx.android.synthetic.main.fragment_settings.*
@@ -19,7 +28,7 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_changepassword), KoinC
 
     private val sharedPref : SharedPreferences by inject()
 
-    private val userViewModel : MainContract.UserViewModel by sharedViewModel<UserViewModel>()
+    lateinit var navController : NavController
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -28,13 +37,65 @@ class ChangePasswordFragment : Fragment(R.layout.fragment_changepassword), KoinC
     }
 
     private fun init(){
+        navController = Navigation.findNavController(requireView())
         initListeners()
+        initObservers()
+    }
+
+    private fun initObservers(){
+        (requireActivity() as MainActivity).userViewModel.changedPassword.observe(viewLifecycleOwner, Observer {
+            if(it != null){
+                if(it.success){
+                    (requireActivity() as MainActivity).userViewModel.logOut()
+                    sharedPref.edit().clear().commit()
+                    navController.popBackStack(R.id.homeFragment, true)
+                    navController.navigate(R.id.logInFragment)
+                    (requireActivity() as MainActivity).userViewModel.enableChangePassword()
+                }
+                Toast.makeText(context, it.msg, Toast.LENGTH_SHORT).show()
+            }
+        })
     }
 
     private fun initListeners(){
         changePasswordButton.setOnClickListener {
-            Toast.makeText(requireContext(), "cool story bro", Toast.LENGTH_SHORT).show()
+            changePassword()
         }
     }
 
+    private fun changePassword(){
+        if(!checkInternetConnection()){
+            Toast.makeText(requireContext(), "Active internet connection is needed!", Toast.LENGTH_LONG).show()
+            return
+        }
+        if(newPassword1.text.toString() != newPassword2.text.toString()){
+            Toast.makeText(context, "Passwords aren't matching for new password", Toast.LENGTH_SHORT).show()
+            return
+        }
+        (requireActivity() as MainActivity).userViewModel.changePassword(PasswordInformation(
+            (requireActivity() as MainActivity).userViewModel.user.value!!.email,
+            oldPassword.text.toString(),
+            newPassword1.text.toString()
+        ))
+    }
+
+    private fun checkInternetConnection() : Boolean{
+        val connectivityManager = requireContext().getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            val nw      = connectivityManager.activeNetwork ?: return false
+            val actNw = connectivityManager.getNetworkCapabilities(nw) ?: return false
+            return when {
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_WIFI) -> true
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) -> true
+                //for other device how are able to connect with Ethernet
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_ETHERNET) -> true
+                //for check internet over Bluetooth
+                actNw.hasTransport(NetworkCapabilities.TRANSPORT_BLUETOOTH) -> true
+                else -> false
+            }
+        } else {
+            val nwInfo = connectivityManager.activeNetworkInfo ?: return false
+            return nwInfo.isConnected
+        }
+    }
 }
