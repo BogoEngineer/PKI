@@ -30,6 +30,8 @@ import androidx.navigation.fragment.NavHostFragment
 import com.google.android.material.navigation.NavigationView
 import com.squareup.picasso.Picasso
 import com.veskekatke.healthformula.R
+import com.veskekatke.healthformula.data.models.post.User
+import com.veskekatke.healthformula.data.repositories.Recommendation
 import com.veskekatke.healthformula.presentation.contract.MainContract
 import com.veskekatke.healthformula.presentation.view.alarm.NotificationReceiver
 import com.veskekatke.healthformula.presentation.view.fragments.HomeFragment
@@ -48,6 +50,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.O
     var wantExit = false
 
     private val sharedPref : SharedPreferences by inject()
+
+    var users = listOf(User("korisnik", "pki", "Miyamoto", "Musashi", "06444444", "123 Vagabond Street")).toMutableList();
 
     @RequiresApi(Build.VERSION_CODES.M)
     private val onSharedPreferenceChangedListener =
@@ -309,20 +313,15 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.O
                 navController.popBackStack(R.id.homeFragment, true)
                 navController.navigate(R.id.homeFragment)
             }
-            R.id.allSupplements -> {
+            R.id.promotion -> {
                 supportActionBar!!.show()
                 navController.popBackStack(R.id.homeFragment, false)
-                navController.navigate(R.id.allSupplementsFragment)
+                navController.navigate(R.id.promotionFragmentFragment)
             }
-            R.id.myMealPlan -> {
+            R.id.recommended -> {
                 supportActionBar!!.show()
                 navController.popBackStack(R.id.homeFragment, false)
-                navController.navigate(R.id.myMealPlanFragment)
-            }
-            R.id.mySupplementPlan -> {
-                supportActionBar!!.show()
-                navController.popBackStack(R.id.homeFragment, false)
-                navController.navigate(R.id.mySupplementPlanFragment)
+                navController.navigate(R.id.recommendedFragment)
             }
             R.id.about -> {
                 supportActionBar!!.hide()
@@ -425,6 +424,10 @@ class MainActivity : AppCompatActivity(R.layout.activity_main), NavigationView.O
         if (resultCode == Activity.RESULT_OK && requestCode == IMAGE_PICK_CODE){
             profile_image.setImageURI(data?.data)
         }
+    }
+
+    fun getSharedPreferences(): SharedPreferences? {
+        return sharedPref
     }
 
 }

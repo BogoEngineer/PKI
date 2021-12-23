@@ -48,6 +48,12 @@
                 android:name="post"
                 app:argType="string" />
         </action>
+        <action
+            android:id="@+id/action_homeFragment_to_promotionFragmentFragment"
+            app:destination="@id/promotionFragmentFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_recommendedFragment"
+            app:destination="@id/recommendedFragment" />
     </fragment>
     <fragment
         android:id="@+id/aboutFragment"
@@ -173,5 +179,21 @@
         <action
             android:id="@+id/action_changePasswordFragment_to_settingsFragment"
             app:destination="@id/settingsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/promotionFragmentFragment"
+        android:name="com.veskekatke.healthformula.presentation.view.fragments.PromotionFragmentFragment"
+        android:label="PromotionFragmentFragment" >
+        <action
+            android:id="@+id/action_promotionFragmentFragment_to_postDetailsFragment"
+            app:destination="@id/postDetailsFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/recommendedFragment"
+        android:name="com.veskekatke.healthformula.presentation.view.fragments.RecommendedFragment"
+        android:label="RecommendedFragment" >
+        <action
+            android:id="@+id/action_recommendedFragment_to_postDetailsFragment"
+            app:destination="@id/postDetailsFragment" />
     </fragment>
 </navigation>

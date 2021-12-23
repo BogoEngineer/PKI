@@ -4,6 +4,7 @@ import android.content.SharedPreferences
 import android.os.Bundle
 import android.view.MenuItem
 import android.view.View
+import android.widget.TextView
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.ActionBarDrawerToggle
@@ -31,12 +32,13 @@ import com.veskekatke.healthformula.presentation.viewmodel.SupplementViewModel
 import com.veskekatke.healthformula.presentation.viewmodel.UserViewModel
 import kotlinx.android.synthetic.main.activity_main.*
 import kotlinx.android.synthetic.main.fragment_home.*
+import kotlinx.android.synthetic.main.layout_post_list_item.*
 import org.koin.androidx.viewmodel.ext.android.sharedViewModel
 import org.koin.core.KoinComponent
 import org.koin.core.inject
 import timber.log.Timber
 
-class HomeFragment : Fragment(R.layout.fragment_home), KoinComponent{
+class PromotionFragmentFragment : Fragment(R.layout.fragment_home), KoinComponent{
 
     private val postViewModel: MainContract.PostViewModel by sharedViewModel<PostViewModel> ()
 
@@ -48,7 +50,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), KoinComponent{
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.findViewById<NavigationView>(R.id.navView)?.setCheckedItem(R.id.home)
+        activity?.findViewById<NavigationView>(R.id.navView)?.setCheckedItem(R.id.promotionFragmentFragment)
         init()
     }
 
@@ -67,8 +69,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), KoinComponent{
             val navController = findNavController()
 
             val jsonData = Gson().toJson(it)
-
-            val action = HomeFragmentDirections.actionHomeFragmentToPostDetailsFragment(jsonData)
+//
+            val action = PromotionFragmentFragmentDirections.actionPromotionFragmentFragmentToPostDetailsFragment(jsonData)
             (requireActivity() as MainActivity).supportActionBar!!.hide()
             navController.navigate(action)
         }
@@ -81,7 +83,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), KoinComponent{
             renderState(it)
         })
 
-        postViewModel.getAllPosts()
+        postViewModel.getAllOnPromotion()
         //postViewModel.fetchAllPosts()
     }
 

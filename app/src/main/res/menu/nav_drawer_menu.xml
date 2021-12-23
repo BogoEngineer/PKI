@@ -17,9 +17,9 @@
                     android:icon="@drawable/ic_info_black_18dp"
                     android:checkable="true" />
                 <item
-                    android:id="@+id/allSupplements"
-                    android:title="Browse Supplements"
-                    android:icon="@drawable/ic_pill"
+                    android:id="@+id/promotion"
+                    android:title="Promotions"
+                    android:icon="@drawable/ic_fire_icon"
                     android:checkable="true" />
             </group>
         </menu>
@@ -31,15 +31,15 @@
                 android:id="@+id/profileGroup"
                 android:checkableBehavior="single">
                 <item
-                    android:id="@+id/mySupplementPlan"
-                    android:title="My Supplements"
+                    android:id="@+id/recommended"
+                    android:title="Recommended to me"
                     android:icon="@drawable/ic_person_black_18dp"
                     android:checkable="true"/>
-                <item
-                    android:id="@+id/myMealPlan"
-                    android:title="My Meal Plan"
-                    android:icon="@drawable/ic_food"
-                    android:checkable="true"/>
+<!--                <item-->
+<!--                    android:id="@+id/myMealPlan"-->
+<!--                    android:title="My Meal Plan"-->
+<!--                    android:icon="@drawable/ic_food"-->
+<!--                    android:checkable="true"/>-->
             </group>
         </menu>
     </item>

@@ -33,7 +33,7 @@ class AllSupplementsFragment : Fragment(R.layout.fragment_allsupplements){
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.findViewById<NavigationView>(R.id.navView)?.setCheckedItem(R.id.allSupplements)
+//        activity?.findViewById<NavigationView>(R.id.navView)?.setCheckedItem(R.id.allSupplements)
         init()
     }
 

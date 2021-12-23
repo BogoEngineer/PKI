@@ -14,7 +14,7 @@ import timber.log.Timber
 class MyMealPlanFragment : Fragment(R.layout.fragment_mymealplan){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        activity?.findViewById<NavigationView>(R.id.navView)?.setCheckedItem(R.id.myMealPlan)
+//        activity?.findViewById<NavigationView>(R.id.navView)?.setCheckedItem(R.id.myMealPlan)
         init()
     }
 

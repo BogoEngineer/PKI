@@ -24,7 +24,7 @@
             android:id="@+id/tv_one_login"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="HEALTH  FORMULA"
+            android:text="PERCE"
             android:textAlignment="center"
             android:textColor="@color/white"
             android:textSize="32sp"
@@ -34,7 +34,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@+id/tv_one_login"
-            android:text="SOME HIDDEN MOTO"
+            android:text="A reader lives a thousand lives before he dies"
             android:textAlignment="center"
             android:textColor="#ffffff"
             android:textSize="15sp" />

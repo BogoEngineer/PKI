@@ -21,5 +21,4 @@ abstract class PostDao {
         deleteAll()
         insertAll(entities).blockingAwait()
     }
-
 }

@@ -8,6 +8,7 @@ import com.veskekatke.healthformula.data.datasources.ServerChangePasswordRespons
 import com.veskekatke.healthformula.data.models.user.Credentials
 import com.veskekatke.healthformula.data.models.user.PasswordInformation
 import com.veskekatke.healthformula.data.models.user.UserResponse
+import com.veskekatke.healthformula.data.repositories.Recommendation
 import com.veskekatke.healthformula.presentation.view.states.PostsState
 import com.veskekatke.healthformula.presentation.view.states.SupplementsState
 
@@ -16,6 +17,9 @@ interface MainContract {
         val postsState: LiveData<PostsState>
         fun fetchAllPosts()
         fun getAllPosts()
+        fun getAllOnPromotion()
+        fun getAllRecommendedToMe(username : String)
+        fun addRecommendation(recomm: Recommendation)
     }
 
     interface SupplementViewModel {

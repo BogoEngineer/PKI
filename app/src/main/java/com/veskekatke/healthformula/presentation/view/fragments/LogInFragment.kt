@@ -22,6 +22,7 @@ import androidx.lifecycle.Observer
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import com.veskekatke.healthformula.R
+import com.veskekatke.healthformula.data.models.post.User
 import com.veskekatke.healthformula.data.models.user.Credentials
 import com.veskekatke.healthformula.presentation.view.activities.MainActivity
 import kotlinx.android.synthetic.main.activity_main.*
@@ -112,11 +113,30 @@ class LogInFragment : Fragment(R.layout.fragment_login), KoinComponent{
     }
 
     private fun login(){
-        if(!checkInternetConnection()){
-            Toast.makeText(requireContext(), "Active internet connection is needed!", Toast.LENGTH_LONG).show()
-            return
+//        if(!checkInternetConnection()){
+//            Toast.makeText(requireContext(), "Active internet connection is needed!", Toast.LENGTH_LONG).show()
+//            return
+//        }
+//        (requireActivity() as MainActivity).userViewModel.authenticate(Credentials(usernameInput.text.toString(), passwordInput.text.toString()))
+
+        var loginFlag = false
+
+        var users = (activity as MainActivity).users
+
+        for(user in users){
+            if(user.username.equals(usernameInput.text.toString()) && user.password.equals(passwordInput.text.toString())){
+                sharedPref.edit().putString("user", user.username)
+                loginFlag = true
+            }
         }
-        (requireActivity() as MainActivity).userViewModel.authenticate(Credentials(usernameInput.text.toString(), passwordInput.text.toString()))
+
+        if(!loginFlag) {
+            Toast.makeText(context, "Wrong credentials!!", Toast.LENGTH_SHORT).show()
+            return;
+        }
+
+        navController.navigate(R.id.action_logInFragment_to_homeFragment)
+        (requireActivity() as MainActivity).supportActionBar!!.show()
     }
 
     private fun forgotPassword(){
