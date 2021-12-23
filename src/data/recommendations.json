@@ -1,0 +1,17 @@
+[
+    {
+        "bookId": "2",
+        "usernameTo": "korisnik",
+        "usernameFrom": "admin"
+    },
+    {
+        "bookId": "3",
+        "usernameTo": "korisnik",
+        "usernameFrom": "admin"
+    },
+    {
+        "bookId": "1",
+        "usernameTo": "admin",
+        "usernameFrom": "korisnik"
+    }
+]

@@ -1,0 +1,20 @@
+[
+    {
+        "password": "pki",
+        "username": "korisnik",
+        "firstName": "Miyamoto",
+        "lastName": "Musashi",
+        "phone": "064444444",
+        "address": "123 Vagabond Street",
+        "admin": false
+    },
+    {
+        "password": "pki",
+        "username": "admin",
+        "firstName": "Sasaki",
+        "lastName": "Kojiro",
+        "phone": "064444445",
+        "address": "113 Vagabond Street",
+        "admin": true
+    }
+]

@@ -1,0 +1,46 @@
+
+html{
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+body{
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background-color: #E8E8E8;
+}
+
+img {
+    border-radius: 10px;
+}
+
+.details {
+    position: fixed;
+    top: 10%;
+    width: 40%;
+    left: 20%;
+}
+
+.comments {
+    position: relative;
+    width: 30%;
+    left: 62%;
+}
+
+.rating{
+    position: relative;
+    left: 5%
+}
+
+.recommend{
+    position: relative;
+    top: 3%;
+}
+
+.confirm{
+    position: relative;
+    left: 1%;
+    top: 6%;
+}

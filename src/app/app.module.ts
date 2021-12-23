@@ -23,6 +23,9 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatBadgeModule} from '@angular/material/badge';
 import {MatChipsModule} from '@angular/material/chips';
 import {MatAutocompleteModule} from '@angular/material/autocomplete';
+import {MatCardModule} from '@angular/material/card';
+import {MatProgressBarModule} from '@angular/material/progress-bar';
+
 
 import { NgbModule } from '@ng-bootstrap/ng-bootstrap';
 
@@ -35,12 +38,12 @@ import { FormsModule } from '@angular/forms';
 import { HttpClientModule } from '@angular/common/http';
 
 import {AdminService } from './services/admin.service';
-import { UsersComponent } from './components/users/users.component'
 import { SupplementsComponent } from './components/supplements/supplements.component';
 import { FooditemsComponent } from './components/fooditems/fooditems.component';
 import { FoodchoicesComponent } from './components/foodchoices/foodchoices.component';
 import { PostsComponent } from './components/posts/posts.component';
 import { HomeComponent } from './components/home/home.component';
+import { UserHomeComponent } from './components/user-home/userhome.component';
 import { AddnewComponent } from './components/addnew/addnew.component';
 import { ChooseSupplementsComponent } from './components/choose-supplements/choose-supplements.component';
 import { ChooseFooditemsComponent } from './components/choose-fooditems/choose-fooditems.component';
@@ -48,18 +51,21 @@ import { MealplansComponent } from './components/mealplans/mealplans.component';
 import { ChangePasswordComponent } from './components/change-password/change-password.component';
 import { AppointmentComponent } from './components/appointment/appointment.component';
 import { Guard } from './guards/Guard';
+import { PostDetailsComponent } from './components/post-details/post-details.component';
 
 const routes: Routes = [
   { path: '', component: LoginComponent },
   { path: 'admin', component: HomeComponent, canActivate: [Guard] },
-  { path: 'admin/users', component: UsersComponent, canActivate: [Guard] },
   { path: 'admin/supplements', component: SupplementsComponent, canActivate: [Guard] },
   { path: 'admin/fooditems', component: FooditemsComponent, canActivate: [Guard] },
   { path: 'admin/foodchoices', component: FoodchoicesComponent, canActivate: [Guard] },
   { path: 'admin/posts', component: PostsComponent, canActivate: [Guard] },
   { path: 'admin/addnew', component: AddnewComponent, canActivate: [Guard] },
   { path: 'admin/changepassword', component: ChangePasswordComponent, canActivate: [Guard] },
-  { path: 'admin/users/appointment', component: AppointmentComponent, canActivate: [Guard] }
+  { path: 'admin/users/appointment', component: AppointmentComponent, canActivate: [Guard] },
+
+  { path: 'user', component: UserHomeComponent, canActivate: [Guard] },
+  { path: 'user/details', component: PostDetailsComponent, canActivate: [Guard] },
 ];
 
 @NgModule({
@@ -67,7 +73,6 @@ const routes: Routes = [
     AppComponent,
     LoginComponent,
     NavbarComponent,
-    UsersComponent,
     SupplementsComponent,
     FoodchoicesComponent,
     FooditemsComponent,
@@ -78,7 +83,9 @@ const routes: Routes = [
     ChooseFooditemsComponent,
     MealplansComponent,
     ChangePasswordComponent,
-    AppointmentComponent
+    AppointmentComponent,
+    UserHomeComponent,
+    PostDetailsComponent
   ],
   imports: [
     BrowserModule,
@@ -93,6 +100,7 @@ const routes: Routes = [
     MatButtonModule,
     MatSelectModule,
     MatIconModule,
+    MatCardModule,
     FormsModule,
     ReactiveFormsModule,
     MatTableModule,
@@ -104,6 +112,7 @@ const routes: Routes = [
     MatListModule,
     MatBadgeModule,
     MatTabsModule,
+    MatProgressBarModule,
     MatChipsModule,
     MatAutocompleteModule,
     NgbModule 

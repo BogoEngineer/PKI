@@ -3,6 +3,9 @@ import { Router } from '@angular/router';
 import { MatSnackBar } from '@angular/material/snack-bar';
 import { AdminService } from 'src/app/services/admin.service';
 
+import allBooks from '../../../data/AllBooks.json';
+import users from '../../../data/users.json';
+
 @Component({
   selector: 'app-login',
   templateUrl: './login.component.html',
@@ -37,17 +40,19 @@ export class LoginComponent implements OnInit {
       return;
     }
 
-    this.adminService.login(this.user).subscribe(res=>{
-      if(res.success == true){
-        localStorage.setItem("jwt", res.token)
-        this.router.navigate(['admin'])
-      }
-      else{
-        this.snackBar.open(res.msg, 'x', {
-          duration: 1500,
-          verticalPosition: "bottom"
-        })
-      }
-    })
+    localStorage.setItem("book", JSON.stringify(allBooks))
+    var usrs = users
+    var user = usrs.filter(usr=>{
+      if(usr.username == this.user.email && usr.password == this.user.password) return usr
+    })[0]
+    localStorage.setItem("user", JSON.stringify(user))
+    if(user == null) this.snackBar.open('Wrong credentials!', 'X', {duration: 2000})
+    if(user.admin){
+      this.router.navigate(['admin']);
+      return;
+    } 
+    this.router.navigate(['user']);
+    return;
+
   }
 }

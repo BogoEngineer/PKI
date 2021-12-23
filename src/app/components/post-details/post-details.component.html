@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <mat-form-field appearance="fill" class="recommend" [style.fontSize.px]=14>
+        <mat-label>Recommend...</mat-label>
+        <input matInput [(ngModel)]='recommend'>
+    </mat-form-field>
+    <button mat-raised-button class="confirm" (click)="recommendFunc()">Recommend</button>
+
+    <div class="details">
+        <img mat-card-image [src]="post.image" alt="Unavailable" height="600px">
+        <mat-card class="example-card">
+            <mat-card-subtitle>{{post.author}}</mat-card-subtitle>
+            <mat-card-title>{{post.name}}</mat-card-title>
+            <mat-card-content>
+                <p>{{post.content}}</p>
+            </mat-card-content>
+            <mat-divider inset></mat-divider>
+            <mat-card-actions>
+                <button mat-button (click)="leaveComment()">COMMENT</button>
+            </mat-card-actions>
+        </mat-card>
+    </div>
+
+    <br>
+    <div class="comments">
+        <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+            <mat-expansion-panel-header>
+                <mat-panel-title>
+                    <p>Comments</p>
+                </mat-panel-title>
+            </mat-expansion-panel-header>
+            <div *ngFor="let comment of post.comments">
+                <p>{{comment.text}}</p>
+                <p> Rating: {{comment.rating}}</p>
+                <hr>
+            </div>
+        </mat-expansion-panel>
+
+        <div class="myComment" *ngIf="commentBool==true">
+            <mat-card class="example-card">
+                <mat-card-content>
+                    <mat-form-field class="example-full-width" appearance="fill">
+                        <mat-label>Leave a comment</mat-label>
+                        <textarea matInput placeholder="This book really portrays..."
+                            [(ngModel)]='comment.text'></textarea>
+                    </mat-form-field>
+                    <mat-form-field appearance="fill" class="rating">
+                        <mat-label>Choose a rating</mat-label>
+                        <mat-select [(ngModel)]='comment.rating'>
+                            <mat-option value="1">1</mat-option>
+                            <mat-option value="2">2</mat-option>
+                            <mat-option value="3">3</mat-option>
+                            <mat-option value="4">4</mat-option>
+                            <mat-option value="5">5</mat-option>
+                        </mat-select>
+                    </mat-form-field>
+                </mat-card-content>
+                <mat-divider inset></mat-divider>
+                <mat-card-actions>
+                    <button mat-button (click)="confirm()">CONFIRM</button>
+                </mat-card-actions>
+            </mat-card>
+        </div>
+    </div>
+</body>
+
+</html>

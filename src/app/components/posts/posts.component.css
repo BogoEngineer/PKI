@@ -13,6 +13,38 @@ body{
 
 .posts {
     position: relative;
-    width: 50%;
-    left: 25%;
+    top: 10%;
+    width: 40%;
+    height: 50%;
+    left: 30%;
+}
+
+
+img {
+    position: relative;
+    left: 15%;
+    width: 70%;
+
+}
+
+.search{
+    position: relative;
+    top: 5%;
+    left: 45%;
+}
+
+button{
+    position: relative;
+    top: 4%;
+    left: 47%;
+}
+
+img{
+    border-radius: 5px;
+}
+::ng-deep .carousel-control-prev-icon{
+  background-image: url('https://apufpel.com.br/assets/img/seta_prim.png');
+}
+::ng-deep .carousel-control-next-icon{
+  background-image: url('https://apufpel.com.br/assets/img/seta_ult.png');
 }

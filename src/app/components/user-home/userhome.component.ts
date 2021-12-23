@@ -6,17 +6,15 @@ const DURATION = 1500;
 
 @Component({
   selector: 'app-home',
-  templateUrl: './home.component.html',
-  styleUrls: ['./home.component.css']
+  templateUrl: './user-home.component.html',
+  styleUrls: ['./user-home.component.css']
 })
-export class HomeComponent implements OnInit {
-  constructor(
+export class UserHomeComponent implements OnInit {
+  constructor(    
     private snackBar: MatSnackBar,
     private route: ActivatedRoute,
     private router: Router) { }
 
-  search = "";
   ngOnInit(): void {
-    
   }
 }
